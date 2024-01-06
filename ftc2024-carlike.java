@@ -20,6 +20,7 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
         public void runOpMode() throws InterruptedException {
                 float x;
                 double y;
+                double t;
                 String mode = "normal";
                 boolean already_a = false;
                 telemetry.addData("Status", "Initialized");
@@ -30,6 +31,9 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
                 
                 
                 while (opModeIsActive()) {
+                        x = gamepad1.left_stick_x;
+                        y = gamepad1.left_stick_y;
+                        t= gamepad1.left_trigger;
                         telemetry.addData("Status", "Running");
                         if(gamepad1.a && !already_a){
                                 if(mode=="normal"){
@@ -47,21 +51,21 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
                         double lpower = 0.0;
                         double rpower = 0.0;
                         if(mode=="normal"){
-                                double ysign = gamepad1.left_stick_y>0?1.0:(gamepad1.left_stick_y<0?-1.0:0.0);
-                                double xsign = gamepad1.left_stick_x>0?1.0:(gamepad1.left_stick_x<0?-1.0:0.0);
-                                lpower = -ysign * gamepad1.left_trigger + (xsign-2*gamepad1.left_stick_x)*gamepad1.left_trigger;
-                                rpower = ysign * gamepad1.left_trigger + (xsign-2*gamepad1.left_stick_x)*gamepad1.left_trigger;
+                                double ysign = y>0?1.0:(y<0?-1.0:0.0);
+                                double xsign = x>0?1.0:(x<0?-1.0:0.0);
+                                lpower = -ysign * t + (xsign-2*x)*t;
+                                rpower = ysign * t + (xsign-2*x)*t;
                         }
                         else if (mode=="tank"){
-                                lpower = -gamepad1.left_stick_y;
+                                lpower = -y;
                                 rpower = gamepad1.right_stick_y;
                         }
 			else if (mode=="essaifranck"){
-				double a = (gamepad1.left_stick_x-gamepad1.left_stick_y)/Math.pow(2,1/2);
-				double b = (gamepad1.left_stick_x+gamepad1.left_stick_y)/Math.pow(2,1/2);
-                                double asqr_plus_bsqr = Math.pow(a,2)+Math.pow(b,2);
-                                lpower = (a/asqr_plus_bsqr)*Math.pow(gamepad1.left_trigger,1/2);
-                                rpower = (b/asqr_plus_bsqr)*Math.pow(gamepad1.left_trigger,1/2);
+				double a = (x-y)/Math.pow(2,1/2);
+				double b = (x+y)/Math.pow(2,1/2);
+                                double vmean = (a+b)/2;
+                                lpower = (a/vmean)*t;
+                                rpower = (b/vmean)*t;
 			}
                         if(!(gamepad1.left_bumper)){
                                 lpower/=3;
@@ -69,7 +73,7 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
                         }
                         lm.setPower(lpower);
                         rm.setPower(rpower);
-                        telemetry.addData("ltrigg",gamepad1.left_trigger);
+                        telemetry.addData("ltrigg",t);
                         telemetry.addData("mode",mode);
                         telemetry.update();
                 }
