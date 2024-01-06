@@ -31,6 +31,7 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
                 telemetry.update();
                 lm = hardwareMap.get(DcMotor.class, "blm");
                 rm = hardwareMap.get(DcMotor.class, "brm");
+		rm.setDirection(DcMotorSimple.Direction.REVERSE);
                 waitForStart();
                 
                 
