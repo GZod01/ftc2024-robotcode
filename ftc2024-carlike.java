@@ -64,8 +64,8 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
 				double a = (x-y)/Math.pow(2,1/2);
 				double b = (x+y)/Math.pow(2,1/2);
                                 double vmean = (a+b)/2;
-                                lpower = (a/vmean)*t;
-                                rpower = (b/vmean)*t;
+                                lpower = (a/vmean)*(Math.log(t+1)/Math.log(2));
+                                rpower = (b/vmean)*(Math.log(t+1)/Math.log(2));
 			}
                         if(!(gamepad1.left_bumper)){
                                 lpower/=3;
