@@ -17,7 +17,7 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
         private DcMotor rm;
         private DcMotor lm;
 	private double helloexp(double t){
-		return (Math.exp(5*t-1)-1)/(Math.exp(5)-1);
+		return (Math.exp(5*t)-1)/(Math.exp(5)-1);
 	}
         @Override
         public void runOpMode() throws InterruptedException {
@@ -85,6 +85,7 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
 			telemetry.addData("lpow",lpower);
 			telemetry.addData("rpow",rpower);
                         telemetry.addData("ltrigg",t);
+                        telemetry.addData("t2",t2);
                         telemetry.addData("mode",mode);
                         telemetry.update();
                 }
