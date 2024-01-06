@@ -58,7 +58,7 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
                         }
 			else if (mode=="essaifranck"){
 				lpower = (gamepad1.left_stick_x-gamepad1.left_stick_y)/Math.pow(2,1/2);
-				rpower = (gamepad1.left_stick_y-gamepad1.left_stick_x)/Math.pow(2,1/2);
+				rpower = (gamepad1.left_stick_x+gamepad1.left_stick_y)/Math.pow(2,1/2);
 			}
                         if(!(gamepad1.left_bumper)){
                                 lpower/=3;
