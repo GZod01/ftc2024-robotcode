@@ -16,6 +16,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class Werobot_FTC2024_carlike extends LinearOpMode {
         private DcMotor rm;
         private DcMotor lm;
+	private double helloexp(double t){
+		return (Math.exp(5*t-1)-1)/(Math.exp(5)-1);
+	}
         @Override
         public void runOpMode() throws InterruptedException {
                 float x;
@@ -34,6 +37,7 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
                         x = gamepad1.left_stick_x;
                         y = gamepad1.left_stick_y;
                         t= gamepad1.left_trigger;
+			t2 = helloexp(t);
                         telemetry.addData("Status", "Running");
                         if(gamepad1.a && !already_a){
                                 if(mode=="normal"){
@@ -64,8 +68,8 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
 				double a = (x-y)/Math.pow(2,1/2);
 				double b = (x+y)/Math.pow(2,1/2);
                                 double vmean = (a+b)/2;
-                                lpower = (a/vmean)*(Math.log(t+1)/Math.log(2));
-                                rpower = (b/vmean)*(Math.log(t+1)/Math.log(2));
+                                lpower = (a/vmean)*t2;
+                                rpower = (b/vmean)*t2;
 			}
                         if(!(gamepad1.left_bumper)){
                                 lpower/=3;
