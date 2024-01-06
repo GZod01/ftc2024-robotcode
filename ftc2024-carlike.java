@@ -24,6 +24,7 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
                 float x;
                 double y;
                 double t;
+		double t2;
                 String mode = "normal";
                 boolean already_a = false;
                 telemetry.addData("Status", "Initialized");
