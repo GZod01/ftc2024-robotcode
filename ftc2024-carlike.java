@@ -79,6 +79,9 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
                         }
                         lm.setPower(lpower);
                         rm.setPower(rpower);
+			
+			telemetry.addData("x",x);
+			telemetry.addData("y",y);
 			telemetry.addData("lpow",lpower);
 			telemetry.addData("rpow",rpower);
                         telemetry.addData("ltrigg",t);
