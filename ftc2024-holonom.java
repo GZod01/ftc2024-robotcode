@@ -30,7 +30,7 @@ public class Werobot_FTC2024 extends LinearOpMode {
         private DcMotor brm;
         private DcMotor blm;
 	private IMU imu;
-	public void helloexp(double t){
+	public double helloexp(double t){
 		return (Math.exp(5*t)-1)/(Math.exp(5)-1);
 	}
         @Override
