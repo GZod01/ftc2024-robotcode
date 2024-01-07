@@ -30,6 +30,9 @@ public class Werobot_FTC2024 extends LinearOpMode {
         private DcMotor brm;
         private DcMotor blm;
 	private IMU imu;
+	public void helloexp(){
+		return (Math.exp(5*t)-1)/(Math.exp(5)-1);
+	}
         @Override
         public void runOpMode() throws InterruptedException {
                 float x;
@@ -65,6 +68,8 @@ public class Werobot_FTC2024 extends LinearOpMode {
                 
                 
                 while (opModeIsActive()) {
+			x = gamepad1.left_stick_x;
+			y = gamepad1.left_stick_y;
                         telemetry.addData("Status", "Running");
 			YawPitchRollAngles robotOrientation;
 			robotOrientation = imu.getRobotYawPitchRollAngles();
@@ -75,9 +80,9 @@ public class Werobot_FTC2024 extends LinearOpMode {
 			double Pitch = robotOrientation.getPitch(AngleUnit.RADIANS);
 			double Roll  = robotOrientation.getRoll(AngleUnit.RADIANS);
                         double[] motors_values = new double[4];
-                        telemetry.addData("left_stick_x", gamepad1.left_stick_x);
-                        telemetry.addData("left_stick_y", gamepad1.left_stick_y);
-                        double[] joystick_vector = {(double) gamepad1.left_stick_x,gamepad1.left_stick_y}; 
+                        telemetry.addData("left_stick_x", x);
+                        telemetry.addData("left_stick_y", y);
+                        double[] joystick_vector = {(double) x,y}; 
                         double joystick_norm = Math.pow(
                                 (
                                         (
@@ -87,13 +92,23 @@ public class Werobot_FTC2024 extends LinearOpMode {
                                         )
                                 ),(1.0/2.0)
                         );
+			joystick_norm = helloexp(joystick_norm);
+			if(gamepad1.a && !already_a){
+				if(mode=="normal"){
+					mode="IMU";
+				}else{
+					mode="normal";
+				}
+			}
                         for(int i = 0; i<motors_angles.length; i++){
                                 int[] cur_motor = motors_angles[i];
                                 double cur_motor_norm = Math.pow(((Math.pow(cur_motor[0],2))+(Math.pow(cur_motor[1],2))),(1.0/2.0));
                                 double joystick_angle = Math.atan2(joystick_vector[0],joystick_vector[1]);
                                 double cur_motor_angle = Math.atan2(cur_motor[0],cur_motor[1]);
                                 double diff_angle = joystick_angle - cur_motor_angle;
-				diff_angle-=Yaw;
+				if (mode=="normal"){
+					diff_angle-=Yaw;
+				}
                                 motors_values[i] =  (cur_motor_norm*joystick_norm*Math.cos(diff_angle));
                                 motors_values[i] = (motors_values[i]+gamepad1.right_stick_x)/(Math.abs(gamepad1.right_stick_x)+1);
                                 motors_values[i]= motors_values[i]/Math.sqrt(2);
@@ -110,6 +125,7 @@ public class Werobot_FTC2024 extends LinearOpMode {
                         blm.setPower(motors_values[2]);
                         brm.setPower(motors_values[3]);
 			telemetry.addData("yaw",Yaw);
+			telemetry.addData("Mode",mode);
                         telemetry.update();
                 }
         }
