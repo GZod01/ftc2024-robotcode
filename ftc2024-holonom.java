@@ -69,9 +69,9 @@ public class Werobot_FTC2024 extends LinearOpMode {
 
 			// Now use these simple methods to extract each angle
 			// (Java type double) from the object you just created:
-			double Yaw   = robotOrientation.getYaw(AngleUnit.RADIAN);
-			double Pitch = robotOrientation.getPitch(AngleUnit.RADIAN);
-			double Roll  = robotOrientation.getRoll(AngleUnit.RADIAN);
+			double Yaw   = robotOrientation.getYaw(AngleUnit.RADIANS);
+			double Pitch = robotOrientation.getPitch(AngleUnit.RADIANS);
+			double Roll  = robotOrientation.getRoll(AngleUnit.RADIANS);
                         double[] motors_values = new double[4];
                         telemetry.addData("left_stick_x", gamepad1.left_stick_x);
                         telemetry.addData("left_stick_y", gamepad1.left_stick_y);
