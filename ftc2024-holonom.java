@@ -38,6 +38,7 @@ public class Werobot_FTC2024 extends LinearOpMode {
                 float x;
                 double y;
 		String mode;
+		boolean already_a = false;
                 int[] fr_angle = {1,1};
                 int[] fl_angle = {1,-1};
                 int[] bl_angle = {-1,-1};
@@ -100,6 +101,9 @@ public class Werobot_FTC2024 extends LinearOpMode {
 				}else{
 					mode="normal";
 				}
+			}
+			if(!gamepad1.a && already_a){
+				already_a = false;
 			}
                         for(int i = 0; i<motors_angles.length; i++){
                                 int[] cur_motor = motors_angles[i];
