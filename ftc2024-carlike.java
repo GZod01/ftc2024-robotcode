@@ -25,6 +25,7 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
                 double y;
                 double t;
 		double t2;
+                double t3;
                 String mode = "normal";
                 boolean already_a = false;
                 telemetry.addData("Status", "Initialized");
@@ -40,12 +41,15 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
                         y = gamepad1.left_stick_y;
                         t= gamepad1.right_trigger;
 			t2 = helloexp(t);
+                        t3 = helloexp(Math.sqrt(x^2+y^2))
                         telemetry.addData("Status", "Running");
                         if(gamepad1.a && !already_a){
                                 if(mode=="normal"){
                                         mode="tank";
                                 }else if(mode=="tank"){
 					mode = "essaifranck";
+                                }else if (mode == "essaifranck"){
+                                        mode = "elina";
 				}else{
                                         mode="normal";
                                 }
@@ -73,6 +77,12 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
                                 lpower = (a/vmean)*t2;
                                 rpower = (b/vmean)*t2;
 			}
+                        else if (mode=="elina"){
+                                double a = (-y+x)/Math.pow(2,1/2);
+				double b = (-y-x)/Math.pow(2,1/2);
+                                double vmean = (Math.abs(a)+Math.abs(b))/2;
+                                lpower = (a/vmean)*t3
+                                rpower = (b/vmean)*t3
                         if(!(gamepad1.left_bumper)){
                                 lpower/=3;
                                 rpower/=3;
