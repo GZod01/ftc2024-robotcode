@@ -43,14 +43,17 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
 		telemetry.update();
 		lm = hardwareMap.get(DcMotor.class, "blm");
 		rm = hardwareMap.get(DcMotor.class, "brm");
-		IMU.Parameters parameters = new IMU.Parameters();
-		parameters.mode = IMU.SensorMode.IMU;
-		parameters.angleUnit = IMU.AngleUnit.DEGREES;
-		parameters.accelUnit = IMU.AccelUnit.METERS_PERSEC_PERSEC;
-		parameters.loggingEnabled = false;
+
 
 		imu = hardwareMap.get(IMU.class, "imu");
-		imu.initialize(parameters);
+		imu.initialize(
+			new IMU.Parameters(
+				new RevHubOrientationOnRobot(
+					RevHubOrientationOnRobot.LogoFacingDirection.UP,
+					RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
+				)
+			)
+	        );
 		rm.setDirection(DcMotorSimple.Direction.REVERSE);
 		telemetry.addData("Mode", "calibrating...");
 		telemetry.update();
