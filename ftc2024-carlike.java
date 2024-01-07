@@ -10,14 +10,23 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.IntegratingGyroscope;
+
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 
 @TeleOp(name="WeRobot: FTC2024 Carlike", group="WeRobot")
 public class Werobot_FTC2024_carlike extends LinearOpMode {
 	private DcMotor rm;
 	private DcMotor lm;
-	private IntegratingGyroscope imu;
+	private BNO055IMU imu;
+	private Orientation lastAngles = new Orientation();
+	private double globalAngle, power = .30, correction;
 	private double helloexp(double t){
 		return (Math.exp(5*t)-1)/(Math.exp(5)-1);
 	}
@@ -34,7 +43,14 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
 		telemetry.update();
 		lm = hardwareMap.get(DcMotor.class, "blm");
 		rm = hardwareMap.get(DcMotor.class, "brm");
-		imu = hardwareMap.get(IntegratingGyroscope.class, "imu");
+		BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+		parameters.mode = BNO055IMU.SensorMode.IMU;
+		parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+		parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+		parameters.loggingEnabled = false;
+
+		imu = hardwareMap.get(BNO055IMU.class, "imu");
+		imu.initialize(parameters);
 		rm.setDirection(DcMotorSimple.Direction.REVERSE);
 		waitForStart();
 
@@ -101,8 +117,69 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
 			telemetry.addData("ltrigg",t);
 			telemetry.addData("t2",t2);
 			telemetry.addData("mode",mode);
-			telemetry.addData("imu angular orientation", imu.getAngularOrientation());
+			// Use gyro to drive in a straight line.
+			correction = checkDirection();
+
+			telemetry.addData("1 imu heading", lastAngles.firstAngle);
+			telemetry.addData("2 global heading", globalAngle);
+			telemetry.addData("3 correction", correction);
 			telemetry.update();
 		}
 	}
+    private void resetAngle()
+    {
+        lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        globalAngle = 0;
+    }
+
+    /**
+     * Get current cumulative angle rotation from last reset.
+     * @return Angle in degrees. + = left, - = right.
+     */
+    private double getAngle()
+    {
+        // We experimentally determined the Z axis is the axis we want to use for heading angle.
+        // We have to process the angle because the imu works in euler angles so the Z axis is
+        // returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
+        // 180 degrees. We detect this transition and track the total cumulative angle of rotation.
+
+        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
+
+        if (deltaAngle < -180)
+            deltaAngle += 360;
+        else if (deltaAngle > 180)
+            deltaAngle -= 360;
+
+        globalAngle += deltaAngle;
+
+        lastAngles = angles;
+
+        return globalAngle;
+    }
+
+    /**
+     * See if we are moving in a straight line and if not return a power correction value.
+     * @return Power adjustment, + is adjust left - is adjust right.
+     */
+    private double checkDirection()
+    {
+        // The gain value determines how sensitive the correction is to direction changes.
+        // You will have to experiment with your robot to get small smooth direction changes
+        // to stay on a straight line.
+        double correction, angle, gain = .10;
+
+        angle = getAngle();
+
+        if (angle == 0)
+            correction = 0;             // no adjustment.
+        else
+            correction = -angle;        // reverse sign of angle for correction.
+
+        correction = correction * gain;
+
+        return correction;
+    }
 }
