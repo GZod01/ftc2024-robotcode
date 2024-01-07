@@ -57,18 +57,18 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
 			)
 	        );
 		rm.setDirection(DcMotorSimple.Direction.REVERSE);
-		telemetry.addData("Mode", "calibrating...");
-		telemetry.update();
+		//telemetry.addData("Mode", "calibrating...");
+		//telemetry.update();
 
 		// make sure the imu gyro is calibrated before continuing.
-		while (!isStopRequested() && !imu.isGyroCalibrated())
-		{
-			sleep(50);
-			idle();
-		}
+		//while (!isStopRequested() && !imu.isGyroCalibrated())
+		//{
+		//	sleep(50);
+		//	idle();
+		//}
 
 		telemetry.addData("Mode", "waiting for start");
-		telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
+		//telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
 		telemetry.update();
 		waitForStart();
 
@@ -146,7 +146,7 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
 	}
     private void resetAngle()
     {
-        lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        lastAngles = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         globalAngle = 0;
     }
@@ -162,7 +162,7 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
         // returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
         // 180 degrees. We detect this transition and track the total cumulative angle of rotation.
 
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        Orientation angles = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
 
