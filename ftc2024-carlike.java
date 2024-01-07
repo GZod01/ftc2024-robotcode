@@ -52,6 +52,19 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
 		imu = hardwareMap.get(BNO055IMU.class, "imu");
 		imu.initialize(parameters);
 		rm.setDirection(DcMotorSimple.Direction.REVERSE);
+		telemetry.addData("Mode", "calibrating...");
+		telemetry.update();
+
+		// make sure the imu gyro is calibrated before continuing.
+		while (!isStopRequested() && !imu.isGyroCalibrated())
+		{
+			sleep(50);
+			idle();
+		}
+
+		telemetry.addData("Mode", "waiting for start");
+		telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
+		telemetry.update();
 		waitForStart();
 
 
