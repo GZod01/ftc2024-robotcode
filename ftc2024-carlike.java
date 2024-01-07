@@ -54,6 +54,7 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
 				)
 			)
 	        );
+		imu.resetYaw();
 		rm.setDirection(DcMotorSimple.Direction.REVERSE);
 		//telemetry.addData("Mode", "calibrating...");
 		//telemetry.update();
