@@ -37,7 +37,7 @@ public class Werobot_FTC2024 extends LinearOpMode {
         public void runOpMode() throws InterruptedException {
                 float x;
                 double y;
-		String mode;
+		String mode="normal";
 		boolean already_a = false;
                 int[] fr_angle = {1,1};
                 int[] fl_angle = {1,-1};
