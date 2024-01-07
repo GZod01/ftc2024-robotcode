@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.BHI260APIMU;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -24,7 +24,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 public class Werobot_FTC2024_carlike extends LinearOpMode {
 	private DcMotor rm;
 	private DcMotor lm;
-	private BNO055IMU imu;
+	private BHI260APIMU imu;
 	private Orientation lastAngles = new Orientation();
 	private double globalAngle, power = .30, correction;
 	private double helloexp(double t){
@@ -43,13 +43,13 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
 		telemetry.update();
 		lm = hardwareMap.get(DcMotor.class, "blm");
 		rm = hardwareMap.get(DcMotor.class, "brm");
-		BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-		parameters.mode = BNO055IMU.SensorMode.IMU;
-		parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-		parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+		BHI260APIMU.Parameters parameters = new BHI260APIMU.Parameters();
+		parameters.mode = BHI260APIMU.SensorMode.IMU;
+		parameters.angleUnit = BHI260APIMU.AngleUnit.DEGREES;
+		parameters.accelUnit = BHI260APIMU.AccelUnit.METERS_PERSEC_PERSEC;
 		parameters.loggingEnabled = false;
 
-		imu = hardwareMap.get(BNO055IMU.class, "imu");
+		imu = hardwareMap.get(BHI260APIMU.class, "imu");
 		imu.initialize(parameters);
 		rm.setDirection(DcMotorSimple.Direction.REVERSE);
 		telemetry.addData("Mode", "calibrating...");
