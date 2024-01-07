@@ -30,13 +30,14 @@ public class Werobot_FTC2024 extends LinearOpMode {
         private DcMotor brm;
         private DcMotor blm;
 	private IMU imu;
-	public void helloexp(){
+	public void helloexp(double t){
 		return (Math.exp(5*t)-1)/(Math.exp(5)-1);
 	}
         @Override
         public void runOpMode() throws InterruptedException {
                 float x;
                 double y;
+		String mode;
                 int[] fr_angle = {1,1};
                 int[] fl_angle = {1,-1};
                 int[] bl_angle = {-1,-1};
