@@ -59,6 +59,8 @@ public class Werobot_FTC2024 extends LinearOpMode {
 			)
 	        );
 		imu.resetYaw();
+		telemetry.addData("helloworld","hello");
+		telemetry.update();
                 waitForStart();
                 
                 
