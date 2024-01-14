@@ -109,7 +109,7 @@ public class Werobot_FTC2024 extends LinearOpMode {
                                 int[] cur_motor = motors_angles[i];
                                 double cur_motor_norm = Math.pow(((Math.pow(cur_motor[0],2))+(Math.pow(cur_motor[1],2))),(1.0/2.0));
                                 double joystick_angle = Math.atan2(joystick_vector[0],joystick_vector[1]);
-                                double cur_motor_angle = Math.atan2(cur_motor[0],cur_motor[1]);
+                                double cur_motor_angle = Math.atan2(cur_motor[0],cur_motor[1])+(Math.PI/4);
                                 double diff_angle = joystick_angle - cur_motor_angle;
 				if (mode=="normal"){
 					diff_angle-=Yaw;
