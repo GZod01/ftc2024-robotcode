@@ -21,6 +21,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
+import com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior;
 
 
 @TeleOp(name="WeRobot: FTC2024", group="WeRobot")
@@ -58,6 +59,10 @@ public class Werobot_FTC2024 extends LinearOpMode {
 		frm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 		blm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 		brm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+		flm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+		frm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+		blm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+		brm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 		
 		imu = hardwareMap.get(IMU.class, "imu");
 		imu.initialize(
