@@ -54,8 +54,6 @@ public class Werobot_FTC2024 extends LinearOpMode {
                 frm = hardwareMap.get(DcMotor.class, "frm");
                 blm = hardwareMap.get(DcMotor.class, "blm");
                 brm = hardwareMap.get(DcMotor.class, "brm");
-		blm.setDirection(DcMotorSimple.Direction.REVERSE);
-		brm.setDirection(DcMotorSimple.Direction.REVERSE);
 		imu = hardwareMap.get(IMU.class, "imu");
 		imu.initialize(
 			new IMU.Parameters(
