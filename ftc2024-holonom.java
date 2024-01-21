@@ -54,6 +54,11 @@ public class Werobot_FTC2024 extends LinearOpMode {
                 frm = hardwareMap.get(DcMotor.class, "frm");
                 blm = hardwareMap.get(DcMotor.class, "blm");
                 brm = hardwareMap.get(DcMotor.class, "brm");
+		flm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+		frm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+		blm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+		brm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+		
 		imu = hardwareMap.get(IMU.class, "imu");
 		imu.initialize(
 			new IMU.Parameters(
