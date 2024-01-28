@@ -25,6 +25,7 @@ public class ftc2024_autonome extends LinearOpMode {
 	public void runOpMode() {
 		lm = hardwareMap.get(DcMotor.class, "blm");
 		rm = hardwareMap.get(DcMotor.class, "brm");
+        rm.setDirection(DcMotorSimple.Direction.REVERSE);
 		telemetry.addData("Status", "Initialized");
 		telemetry.update();
         boolean mode = true;
