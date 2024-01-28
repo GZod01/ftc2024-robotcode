@@ -28,7 +28,7 @@ public class ftc2024_autonome extends LinearOpMode {
         rm.setDirection(DcMotorSimple.Direction.REVERSE);
 		telemetry.addData("Status", "Initialized");
 		telemetry.update();
-        boolean mode = true;
+        boolean mode = false;
 		// Wait for the game to start (driver presses PLAY)
 		waitForStart();
 
