@@ -36,8 +36,14 @@ public class ftc2024_autonome extends LinearOpMode {
             //mode Elina
             while (opModeIsActive() && (runtime.seconds() <= 3.0)) {
                 leftMotor.setPower(1);
-                rightMotor.setPower(1);
+                rightMotor.setPower(-1);
                 telemetry.addData("Leg 1", runtime.seconds());
+                telemetry.update();
+            }
+            while (opModeIsActive() && (runtime.seconds() <= 10.0)) {
+                leftMotor.setPower(1);
+                rightMotor.setPower(1);
+                telemetry.addData("Leg 2", runtime.seconds());
                 telemetry.update();
             }
         }
@@ -61,14 +67,9 @@ public class ftc2024_autonome extends LinearOpMode {
 		    }
 	    }
         }
-		// run until the end of the match (driver presses STOP)
-
-		
-		
-
-
-		
+		// run until the end of the match (driver presses STOP
 
 	}
 
 }
+
