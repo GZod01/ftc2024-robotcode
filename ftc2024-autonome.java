@@ -40,6 +40,7 @@ public class ftc2024_autonome extends LinearOpMode {
                 telemetry.addData("Leg 1", runtime.seconds());
                 telemetry.update();
             }
+            runtime.reset();
             while (opModeIsActive() && (runtime.seconds() <= 10.0)) {
                 leftMotor.setPower(1);
                 rightMotor.setPower(1);
