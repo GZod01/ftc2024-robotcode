@@ -42,13 +42,24 @@ public class ftc2024_autonome extends LinearOpMode {
             }
         }
         else {
+	    double[][] operations = {
+		    {3.0,-1.0,1.0} // operation 1: 3 sec , lm=-1 , rm = 1
+	    };
             //mode Aurelien
-            while (opModeIsActive() && (runtime.seconds() <= 3.0)) {
-                leftMotor.setPower(-1);
-                rightMotor.setPower(-1);
-                telemetry.addData("Leg 2", runtime.seconds());
-                telemetry.update();
-            }
+	    for(int i = 0; i<operations.length; i++){
+		    double time = operations[i][0];
+		    double lmvalue = operations[i][1];
+		    double rmvalue = operations[i][2];
+		    runtime.reset();
+		    while (opModeIsActive() && (runtime.seconds() <= time)) {
+			    lm.setPower(lmvalue);
+			    rm.setPower(rmvalue);
+			    telemetry.addData("Runtime Seconds", runtime.seconds());
+			    telemetry.addData("current_operation",operations[i]);
+			    telemetry.addData("current_op_id",i);
+			    telemetry.update();
+		    }
+	    }
         }
 		// run until the end of the match (driver presses STOP)
 
