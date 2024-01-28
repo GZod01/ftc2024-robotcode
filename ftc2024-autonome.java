@@ -51,7 +51,11 @@ public class ftc2024_autonome extends LinearOpMode {
         }
         else {
 	    double[][] operations = {
-		    {3.0,-1.0,1.0} // operation 1: 3 sec , lm=-1 , rm = 1
+		    {3.0,-1.0,1.0}, // operation 1: 3 sec , lm=-1 , rm = 1
+		    {5.0,1.0,1.0},
+		    {2.0,-1.0,1.0},
+		    {3.0,-1.0,-1.0},
+		    {10.0,1.0,-1.0}
 	    };
             //mode Aurelien
 	    for(int i = 0; i<operations.length; i++){
