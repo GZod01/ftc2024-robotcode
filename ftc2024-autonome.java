@@ -69,7 +69,7 @@ public class ftc2024_autonome extends LinearOpMode {
 			};
 			//mode Aurelien
 			for(int i = 0; i<operations.length; i++){
-				double vec = operations[i];
+				double[] vec = operations[i];
 				double x = vec[0];
 				double y = vec[1];
 				double total_dist = (double) math.sqrt(Math.pow(y,2)+Math.pow(x,2));
