@@ -20,6 +20,11 @@ public class ftc2024_autonome extends LinearOpMode {
 	private DcMotor rm;
 	private DcMotor lm;
 	private ElapsedTime     runtime = new ElapsedTime();
+	
+
+	public double time_for_dist(double speed, double dist){
+		return (double) (dist/speed);
+	}
 
 	@Override
 	public void runOpMode() {
