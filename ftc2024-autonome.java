@@ -45,7 +45,7 @@ public class ftc2024_autonome extends LinearOpMode {
 		runtime.reset();
 		if (mode){
 			//mode Elina
-			while (opModeIsActive() && (runtime.seconds() <= 41e-2*maths.PI/4/speed)) {
+			while (opModeIsActive() && (runtime.seconds() <= 41e-2*Math.PI/4/speed)) {
 				lm.setPower(1);
 				rm.setPower(-1);
 				telemetry.addData("Leg 1", runtime.seconds());
