@@ -25,54 +25,59 @@ public class ftc2024_autonome extends LinearOpMode {
 	public void runOpMode() {
 		lm = hardwareMap.get(DcMotor.class, "blm");
 		rm = hardwareMap.get(DcMotor.class, "brm");
-        rm.setDirection(DcMotorSimple.Direction.REVERSE);
+		rm.setDirection(DcMotorSimple.Direction.REVERSE);
 		telemetry.addData("Status", "Initialized");
 		telemetry.update();
-        boolean mode = false;
+		double tour_par_minute = 300.0;
+		double wheel_width = 9.0e-2;
+		double wheel_rayon = (wheel_width)/2;
+		double wheel_perimeter = wheel_rayon*2*Math.PI;
+		double speed = (tour_par_minute/60)*wheel_perimeter;//dist per second
+		boolean mode = false;
 		// Wait for the game to start (driver presses PLAY)
 		waitForStart();
 
-        runtime.reset();
-        if (mode){
-            //mode Elina
-            while (opModeIsActive() && (runtime.seconds() <= 3.0)) {
-                lm.setPower(1);
-                rm.setPower(-1);
-                telemetry.addData("Leg 1", runtime.seconds());
-                telemetry.update();
-            }
-            runtime.reset();
-            while (opModeIsActive() && (runtime.seconds() <= 10.0)) {
-                lm.setPower(1);
-                rm.setPower(1);
-                telemetry.addData("Leg 2", runtime.seconds());
-                telemetry.update();
-            }
-        }
-        else {
-	    double[][] operations = {
-		    {3.0,-1.0,1.0}, // operation 1: 3 sec , lm=-1 , rm = 1
-		    {5.0,1.0,1.0},
-		    {2.0,-1.0,1.0},
-		    {3.0,-1.0,-1.0},
-		    {10.0,1.0,-1.0}
-	    };
-            //mode Aurelien
-	    for(int i = 0; i<operations.length; i++){
-		    double time = operations[i][0];
-		    double lmvalue = operations[i][1];
-		    double rmvalue = operations[i][2];
-		    runtime.reset();
-		    while (opModeIsActive() && (runtime.seconds() <= time)) {
-			    lm.setPower(lmvalue);
-			    rm.setPower(rmvalue);
-			    telemetry.addData("Runtime Seconds", runtime.seconds());
-			    telemetry.addData("current_operation",operations[i]);
-			    telemetry.addData("current_op_id",i);
-			    telemetry.update();
-		    }
-	    }
-        }
+		runtime.reset();
+		if (mode){
+			//mode Elina
+			while (opModeIsActive() && (runtime.seconds() <= 3.0)) {
+				lm.setPower(1);
+				rm.setPower(-1);
+				telemetry.addData("Leg 1", runtime.seconds());
+				telemetry.update();
+			}
+			runtime.reset();
+			while (opModeIsActive() && (runtime.seconds() <= 10.0)) {
+				lm.setPower(1);
+				rm.setPower(1);
+				telemetry.addData("Leg 2", runtime.seconds());
+				telemetry.update();
+			}
+		}
+		else {
+			double[][] operations = {
+				{3.0,-1.0,1.0}, // operation 1: 3 sec , lm=-1 , rm = 1
+				{5.0,1.0,1.0},
+				{2.0,-1.0,1.0},
+				{3.0,-1.0,-1.0},
+				{10.0,1.0,-1.0}
+			};
+			//mode Aurelien
+			for(int i = 0; i<operations.length; i++){
+				double time = operations[i][0];
+				double lmvalue = operations[i][1];
+				double rmvalue = operations[i][2];
+				runtime.reset();
+				while (opModeIsActive() && (runtime.seconds() <= time)) {
+					lm.setPower(lmvalue);
+					rm.setPower(rmvalue);
+					telemetry.addData("Runtime Seconds", runtime.seconds());
+					telemetry.addData("current_operation",operations[i]);
+					telemetry.addData("current_op_id",i);
+					telemetry.update();
+				}
+			}
+		}
 		// run until the end of the match (driver presses STOP
 
 	}
