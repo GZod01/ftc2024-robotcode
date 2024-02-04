@@ -26,6 +26,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 public class Werobot_FTC2024_carlike extends LinearOpMode {
 	private DcMotor rm;
 	private DcMotor lm;
+	private DcMotor moissoneuse;
 	private IMU imu;
 	private double helloexp(double t){
 		return (Math.exp(5*t)-1)/(Math.exp(5)-1);
@@ -38,6 +39,7 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
 		double t2;
 		double t3;
 		String mode = "normal";
+		boolean already_b = false;
 		boolean already_a = false;
 		telemetry.addData("Status", "Initialized");
 		telemetry.update();
@@ -126,6 +128,30 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
 			}
 			lm.setPower(lpower);
 			rm.setPower(rpower);
+
+			if(gamepad1.b && !already_b){
+				already_b = !already_b;
+				if(moissoneuse.getPower == 1){
+					moissoneuse.setPower(0);
+				}else{
+					moissoneuse.setPower(1);
+				}
+			}
+			if(!gamepad1.b && already_b){
+				already_b = !already_b;
+			}
+			if(gamepad1.a && !already_a){
+				already_a = !already_a;
+				if(moissoneuse.getPower == -1){
+					moissoneuse.setPower(0);
+				}else{
+					moissoneuse.setPower(-1);
+				}
+			if(!gamepad1.a && already_a){
+				already_a = !already_a; 
+			}
+			}
+
 
 			telemetry.addData("x",x);
 			telemetry.addData("y",y);
