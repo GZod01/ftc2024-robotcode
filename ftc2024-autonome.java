@@ -26,6 +26,7 @@ public class ftc2024_autonome extends LinearOpMode {
         return (double) (dist/speed);
     }
 
+<<<<<<< HEAD
     @Override
     public void runOpMode() {
         lm = hardwareMap.get(DcMotor.class, "blm");
@@ -41,6 +42,23 @@ public class ftc2024_autonome extends LinearOpMode {
         boolean mode = false;
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
+=======
+	@Override
+	public void runOpMode() {
+		lm = hardwareMap.get(DcMotor.class, "blm");
+		rm = hardwareMap.get(DcMotor.class, "brm");
+		rm.setDirection(DcMotorSimple.Direction.REVERSE);
+		telemetry.addData("Status", "Initialized");
+		telemetry.update();
+		double tour_par_minute = 300.0;
+		double wheel_width = 9.0e-2;
+		double wheel_rayon = (wheel_width)/2;
+		double wheel_perimeter = wheel_rayon*2*Math.PI;
+		double speed = (tour_par_minute/60)*wheel_perimeter;//dist per second
+		boolean mode = true;
+		// Wait for the game to start (driver presses PLAY)
+		waitForStart();
+>>>>>>> c206d7e56bece220257360c44d81b99164e48e06
 
         runtime.reset();
         if (mode){
