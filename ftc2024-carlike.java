@@ -42,6 +42,7 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
         String mode = "normal";
         boolean already_b = false;
         boolean already_a = false;
+        boolean already_x = false;
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         lm = hardwareMap.get(DcMotor.class, "blm");
@@ -141,15 +142,15 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
             if(!gamepad1.b && already_b){
                 already_b = !already_b;
             }
-            if(gamepad1.a && !already_a){
-                already_a = !already_a;
+            if(gamepad1.x && !already_x){
+                already_x = !already_x;
                 if(moissoneuse.getPower() == -1.0){
                     moissoneuse.setPower(0);
                 }else{
                     moissoneuse.setPower(-1);
                 }
-            if(!gamepad1.a && already_a){
-                already_a = !already_a; 
+            if(!gamepad1.x && already_x){
+                already_x = !already_x; 
             }
             }
 
