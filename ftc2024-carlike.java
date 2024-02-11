@@ -132,7 +132,7 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
 
 			if(gamepad1.b && !already_b){
 				already_b = !already_b;
-				if(moissoneuse.getPowerFloat == 1){
+				if(moissoneuse.getPowerFloat == (float) 1){
 					moissoneuse.setPower(0);
 				}else{
 					moissoneuse.setPower(1);
@@ -143,7 +143,7 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
 			}
 			if(gamepad1.a && !already_a){
 				already_a = !already_a;
-				if(moissoneuse.getPowerFloat == -1){
+				if(moissoneuse.getPowerFloat == (float) -1){
 					moissoneuse.setPower(0);
 				}else{
 					moissoneuse.setPower(-1);
