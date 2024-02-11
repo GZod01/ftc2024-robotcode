@@ -32,10 +32,33 @@ public class ftc2024_autonome extends LinearOpMode {
     private DcMotor lm;
     private IMU imu;
     private ElapsedTime     runtime = new ElapsedTime();
+    YawPitchRollAngles robotOrientation;
     
 
     public double time_for_dist(double speed, double dist){
         return (double) (dist/speed);
+    }
+    
+    /*
+     * @param double angle2go => degrees
+     */
+    public double runPid(double angle2go){
+        robotOrientation = imu.getRobotYawPitchRollAngles();
+	angle2go = (angle2go*180)/Math.PI
+	double yaw = robotOrientation.getYaw(AngleUnit.RADIANS);
+	double lastPos;
+	// command -1.0<command<1.0
+	double command = (angle2go-yaw)/2*Math.PI;
+	while (opModeIsActive()){
+	    yaw = robotOrientation.getYaw(AngleUnit.RADIANS);
+	    double currentPos = yaw;
+	    double error = currentPos-lastPos;
+	    lastPos = currentPos;
+	    command += P * error;
+	    lm.setPower(command);
+	    rm.setPower(-command);
+	}
+
     }
 
     @Override
@@ -64,7 +87,6 @@ public class ftc2024_autonome extends LinearOpMode {
         double speed = (tour_par_minute/60)*wheel_perimeter;//dist per second
         boolean mode = true;
         
-        YawPitchRollAngles robotOrientation;
         robotOrientation = imu.getRobotYawPitchRollAngles();
         
         double Yaw   = robotOrientation.getYaw(AngleUnit.DEGREES);
@@ -106,6 +128,8 @@ public class ftc2024_autonome extends LinearOpMode {
 		    rm.setPower((Math.abs(Yaw-90.0)/90)*0.5);
 		    lm.setPower(-(Math.abs(Yaw-90.0)/90)*0.5);
 		}
+	    }
+	}
 
 	if(false){
             double[][] operations = {
