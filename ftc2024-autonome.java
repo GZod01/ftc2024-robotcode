@@ -38,7 +38,7 @@ public class ftc2024_autonome extends LinearOpMode {
 		double wheel_rayon = (wheel_width)/2;
 		double wheel_perimeter = wheel_rayon*2*Math.PI;
 		double speed = (tour_par_minute/60)*wheel_perimeter;//dist per second
-		boolean mode = false;
+		boolean mode = true;
 		// Wait for the game to start (driver presses PLAY)
 		waitForStart();
 
