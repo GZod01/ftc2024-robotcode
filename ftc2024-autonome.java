@@ -97,7 +97,22 @@ public class ftc2024_autonome extends LinearOpMode {
                 telemetry.update();
             }
         }
-        else {
+        else{
+	    while(opModeIsActive()){
+		Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
+		if(Math.abs(Yaw-90.0)<=0.01){
+		    break;
+		}
+		else if((Yaw - 90.0) <0){
+		    lm.setPower((Math.abs(Yaw-90.0)/90)*0.5);
+		    rm.setPower(-(Math.abs(Yaw-90.0)/90)*0.5);
+		}
+		else{
+		    rm.setPower((Math.abs(Yaw-90.0)/90)*0.5);
+		    lm.setPower(-(Math.abs(Yaw-90.0)/90)*0.5);
+		}
+
+	if(false){
             double[][] operations = {
                 {-1.0,1.0}, // vectors
                 {1.0,1.0},
