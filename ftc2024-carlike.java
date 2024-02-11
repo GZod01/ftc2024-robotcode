@@ -45,6 +45,7 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
 		telemetry.update();
 		lm = hardwareMap.get(DcMotor.class, "blm");
 		rm = hardwareMap.get(DcMotor.class, "brm");
+		moissoneuse = hardwareMap.get(DCMotor.class, "flm");
 
 
 		imu = hardwareMap.get(IMU.class, "imu");
