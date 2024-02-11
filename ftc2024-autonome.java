@@ -62,9 +62,6 @@ public class ftc2024_autonome extends LinearOpMode {
 		double wheel_perimeter = wheel_rayon*2*Math.PI;
 		double speed = (tour_par_minute/60)*wheel_perimeter;//dist per second
 		boolean mode = true;
-		double Yaw   = robotOrientation.getYaw(AngleUnit.DEGREES);
-		double Pitch = robotOrientation.getPitch(AngleUnit.DEGREES);
-		double Roll  = robotOrientation.getRoll(AngleUnit.DEGREES);
 		// Wait for the game to start (driver presses PLAY)
 		waitForStart();
 
@@ -123,7 +120,9 @@ public class ftc2024_autonome extends LinearOpMode {
 
 		// Now use these simple methods to extract each angle
 		// (Java type double) from the object you just created:
-		
+		double Yaw   = robotOrientation.getYaw(AngleUnit.DEGREES);
+		double Pitch = robotOrientation.getPitch(AngleUnit.DEGREES);
+		double Roll  = robotOrientation.getRoll(AngleUnit.DEGREES);
 		telemetry.addData("yaw",Yaw);
 
 		telemetry.update();
