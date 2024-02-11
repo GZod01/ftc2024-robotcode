@@ -72,13 +72,13 @@ public class ftc2024_autonome extends LinearOpMode {
 				double[] vec = operations[i];
 				double x = vec[0];
 				double y = vec[1];
-				double total_dist = (double) math.sqrt(Math.pow(y,2)+Math.pow(x,2));
+				double total_dist = (double) Math.sqrt(Math.pow(y,2)+Math.pow(x,2));
 				double time = time_for_dist(speed, time);
 				double a = (-y+x)/Math.pow(2,1/2);
 				double b = (-y-x)/Math.pow(2,1/2);
 				double vmean = (Math.abs(a)+Math.abs(b))/2;
-				lmvalue = (a/vmean);
-				rmvalue = (b/vmean);
+				double lmvalue = (a/vmean);
+				double rmvalue = (b/vmean);
 				runtime.reset();
 				while (opModeIsActive() && (runtime.seconds() <= time)) {
 					lm.setPower(lmvalue);
