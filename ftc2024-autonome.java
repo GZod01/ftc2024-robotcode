@@ -92,6 +92,8 @@ public class ftc2024_autonome extends LinearOpMode {
         double Yaw   = robotOrientation.getYaw(AngleUnit.DEGREES);
         double Pitch = robotOrientation.getPitch(AngleUnit.DEGREES);
         double Roll  = robotOrientation.getRoll(AngleUnit.DEGREES);
+
+		double yaw_sortie;
         
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -102,14 +104,17 @@ public class ftc2024_autonome extends LinearOpMode {
             while (opModeIsActive() && Yaw <= 90.0) {
                 lm.setPower(0.5);
                 rm.setPower(-0.5);
+				robotOrientation = imu.getRobotYawPitchRollAngles();
                 Yaw   = robotOrientation.getYaw(AngleUnit.DEGREES);
-                telemetry.addData("Leg 1", runtime.seconds());
+                telemetry.addData("Yaw : ", Yaw);
                 telemetry.update();
+				yaw_sortie = Yaw;
             }
+			telemetry.addData("yaw_sortie", yaw_sortie)
             runtime.reset();
             while (opModeIsActive() && (runtime.seconds() <= 121.92e-2/speed)) {
-                lm.setPower(1);
-                rm.setPower(1);
+                lm.setPower(0.1);
+                rm.setPower(0.1);
                 telemetry.addData("Leg 2", runtime.seconds());
                 telemetry.update();
             }
