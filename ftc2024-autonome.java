@@ -13,86 +13,122 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.ImuOrientationOnRobot;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
+
 
 @Autonomous
 
 public class ftc2024_autonome extends LinearOpMode {
-    private DcMotor rm;
-    private DcMotor lm;
-    private ElapsedTime     runtime = new ElapsedTime();
-    
+	private DcMotor rm;
+	private DcMotor lm;
+	private IMU imu;
+	private ElapsedTime     runtime = new ElapsedTime();
+	
 
-    public double time_for_dist(double speed, double dist){
-        return (double) (dist/speed);
-    }
+	public double time_for_dist(double speed, double dist){
+		return (double) (dist/speed);
+	}
 
-    @Override
-    public void runOpMode() {
-        lm = hardwareMap.get(DcMotor.class, "blm");
-        rm = hardwareMap.get(DcMotor.class, "brm");
-        rm.setDirection(DcMotorSimple.Direction.REVERSE);
-        telemetry.addData("Status", "Initialized");
-        telemetry.update();
-        double tour_par_minute = 300.0;
-        double wheel_width = 9.0e-2;
-        double wheel_rayon = (wheel_width)/2;
-        double wheel_perimeter = wheel_rayon*2*Math.PI;
-        double speed = (tour_par_minute/60)*wheel_perimeter;//dist per second
-        boolean mode = true;
-        // Wait for the game to start (driver presses PLAY)
-        waitForStart();
+	@Override
+	public void runOpMode() {
+		lm = hardwareMap.get(DcMotor.class, "blm");
+		rm = hardwareMap.get(DcMotor.class, "brm");
+		
+		imu = hardwareMap.get(IMU.class, "imu");
+		imu.initialize(
+			new IMU.Parameters(
+				new RevHubOrientationOnRobot(
+					RevHubOrientationOnRobot.LogoFacingDirection.UP,
+					RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
+				)
+			)
+	        );
+		imu.resetYaw();
 
-        runtime.reset();
-        if (mode){
-            //mode Elina
-            while (opModeIsActive() && (runtime.seconds() <= 41e-2*Math.PI/4/speed)) {
-                lm.setPower(1);
-                rm.setPower(-1);
-                telemetry.addData("Leg 1", runtime.seconds());
-                telemetry.update();
-            }
-            runtime.reset();
-            while (opModeIsActive() && (runtime.seconds() <= 121.92e-2/speed)) {
-                lm.setPower(1);
-                rm.setPower(1);
-                telemetry.addData("Leg 2", runtime.seconds());
-                telemetry.update();
-            }
-        }
-        else {
-            double[][] operations = {
-                {-1.0,1.0}, // vectors
-                {1.0,1.0},
-                {-1.0,1.0},
-                {-1.0,-1.0},
-                {1.0,-1.0}
-            };
-            //mode Aurelien
-            for(int i = 0; i<operations.length; i++){
-                double[] vec = operations[i];
-                double x = vec[0];
-                double y = vec[1];
-                double total_dist = (double) Math.sqrt(Math.pow(y,2)+Math.pow(x,2));
-                double time = time_for_dist(speed, total_dist);
-                double a = (-y+x)/Math.pow(2,1/2);
-                double b = (-y-x)/Math.pow(2,1/2);
-                double vmean = (Math.abs(a)+Math.abs(b))/2;
-                double lmvalue = (a/vmean);
-                double rmvalue = (b/vmean);
-                runtime.reset();
-                while (opModeIsActive() && (runtime.seconds() <= time)) {
-                    lm.setPower(lmvalue);
-                    rm.setPower(rmvalue);
-                    telemetry.addData("Runtime Seconds", runtime.seconds());
-                    telemetry.addData("current_operation",operations[i]);
-                    telemetry.addData("current_op_id",i);
-                    telemetry.update();
-                }
-            }
-        }
-        // run until the end of the match (driver presses STOP
+		rm.setDirection(DcMotorSimple.Direction.REVERSE);
+		telemetry.addData("Status", "Initialized");
+		telemetry.update();
+		double tour_par_minute = 300.0;
+		double wheel_width = 9.0e-2;
+		double wheel_rayon = (wheel_width)/2;
+		double wheel_perimeter = wheel_rayon*2*Math.PI;
+		double speed = (tour_par_minute/60)*wheel_perimeter;//dist per second
+		boolean mode = true;
+		// Wait for the game to start (driver presses PLAY)
+		waitForStart();
 
-    }
+		runtime.reset();
+		if (mode){
+			//mode Elina
+			while (opModeIsActive() && (runtime.seconds() <= Yaw != 90)) {
+				lm.setPower(1);
+				rm.setPower(-1);
+				telemetry.addData("Leg 1", runtime.seconds());
+				telemetry.update();
+			}
+			runtime.reset();
+			while (opModeIsActive() && (runtime.seconds() <= 121.92e-2/speed)) {
+				lm.setPower(1);
+				rm.setPower(1);
+				telemetry.addData("Leg 2", runtime.seconds());
+				telemetry.update();
+			}
+		}
+		else {
+			double[][] operations = {
+				{-1.0,1.0}, // vectors
+				{1.0,1.0},
+				{-1.0,1.0},
+				{-1.0,-1.0},
+				{1.0,-1.0}
+			};
+			//mode Aurelien
+			for(int i = 0; i<operations.length; i++){
+				double[] vec = operations[i];
+				double x = vec[0];
+				double y = vec[1];
+				double total_dist = (double) Math.sqrt(Math.pow(y,2)+Math.pow(x,2));
+				double time = time_for_dist(speed, total_dist);
+				double a = (-y+x)/Math.pow(2,1/2);
+				double b = (-y-x)/Math.pow(2,1/2);
+				double vmean = (Math.abs(a)+Math.abs(b))/2;
+				double lmvalue = (a/vmean);
+				double rmvalue = (b/vmean);
+				runtime.reset();
+				while (opModeIsActive() && (runtime.seconds() <= time)) {
+					lm.setPower(lmvalue);
+					rm.setPower(rmvalue);
+					telemetry.addData("Runtime Seconds", runtime.seconds());
+					telemetry.addData("current_operation",operations[i]);
+					telemetry.addData("current_op_id",i);
+
+					
+					telemetry.update();
+				}
+			}
+		}
+		YawPitchRollAngles robotOrientation;
+		robotOrientation = imu.getRobotYawPitchRollAngles();
+
+		// Now use these simple methods to extract each angle
+		// (Java type double) from the object you just created:
+		double Yaw   = robotOrientation.getYaw(AngleUnit.DEGREES);
+		double Pitch = robotOrientation.getPitch(AngleUnit.DEGREES);
+		double Roll  = robotOrientation.getRoll(AngleUnit.DEGREES);
+		telemetry.addData("yaw",Yaw);
+
+		telemetry.update();
+		// run until the end of the match (driver presses STOP
+
+	}
 
 }
 
