@@ -17,6 +17,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import com.qualcomm.robotcore.hardware.ImuOrientationOnRobot;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -88,7 +89,7 @@ public class ftc2024_autonome extends LinearOpMode {
                 telemetry.update();
 				yaw_sortie = Yaw;
             }
-			telemetry.addData("yaw_sortie", yaw_sortie)
+			telemetry.addData("yaw_sortie", yaw_sortie);
             runtime.reset();
             while (opModeIsActive() && (runtime.seconds() <= 121.92e-2/speed)) {
                 lm.setPower(0.1);
@@ -98,50 +99,50 @@ public class ftc2024_autonome extends LinearOpMode {
             }
         }
         else{
-	    while(opModeIsActive()){
-		Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
-		if(Math.abs(Yaw-90.0)<=0.01){
-		    break;
-		}
-		else if((Yaw - 90.0) <0){
-		    lm.setPower((Math.abs(Yaw-90.0)/90)*0.5);
-		    rm.setPower(-(Math.abs(Yaw-90.0)/90)*0.5);
-		}
-		else{
-		    rm.setPower((Math.abs(Yaw-90.0)/90)*0.5);
-		    lm.setPower(-(Math.abs(Yaw-90.0)/90)*0.5);
-		}
-
+	        while(opModeIsActive()){
+		        Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
+		        if(Math.abs(Yaw-90.0)<=0.01){
+		            break;
+		        }
+		        else if((Yaw - 90.0) <0){
+		            lm.setPower((Math.abs(Yaw-90.0)/90)*0.5);
+		            rm.setPower(-(Math.abs(Yaw-90.0)/90)*0.5);
+		        }
+		        else{
+		            rm.setPower((Math.abs(Yaw-90.0)/90)*0.5);
+		            lm.setPower(-(Math.abs(Yaw-90.0)/90)*0.5);
+		        }
+            }
 	if(false){
-            double[][] operations = {
-                {-1.0,1.0}, // vectors
-                {1.0,1.0},
-                {-1.0,1.0},
-                {-1.0,-1.0},
-                {1.0,-1.0}
+        double[][] operations = {
+            {-1.0,1.0}, // vectors
+            {1.0,1.0},
+            {-1.0,1.0},
+            {-1.0,-1.0},
+          {1.0,-1.0}
             };
             //mode Aurelien
-            for(int i = 0; i<operations.length; i++){
-                double[] vec = operations[i];
-                double x = vec[0];
-                double y = vec[1];
-                double total_dist = (double) Math.sqrt(Math.pow(y,2)+Math.pow(x,2));
-                double time = time_for_dist(speed, total_dist);
-                double a = (-y+x)/Math.pow(2,1/2);
-                double b = (-y-x)/Math.pow(2,1/2);
-                double vmean = (Math.abs(a)+Math.abs(b))/2;
-                double lmvalue = (a/vmean);
-                double rmvalue = (b/vmean);
-                runtime.reset();
-                while (opModeIsActive() && (runtime.seconds() <= time)) {
-                    lm.setPower(lmvalue);
-                    rm.setPower(rmvalue);
-                    telemetry.addData("Runtime Seconds", runtime.seconds());
-                    telemetry.addData("current_operation",operations[i]);
-                    telemetry.addData("current_op_id",i);
+        for(int i = 0; i<operations.length; i++){
+            double[] vec = operations[i];
+            double x = vec[0];
+            double y = vec[1];
+            double total_dist = (double) Math.sqrt(Math.pow(y,2)+Math.pow(x,2));
+            double time = time_for_dist(speed, total_dist);
+            double a = (-y+x)/Math.pow(2,1/2);
+            double b = (-y-x)/Math.pow(2,1/2);
+            double vmean = (Math.abs(a)+Math.abs(b))/2;
+            double lmvalue = (a/vmean);
+            double rmvalue = (b/vmean);
+            runtime.reset();
+                
+            while (opModeIsActive() && (runtime.seconds() <= time)) {
+                lm.setPower(lmvalue);
+                rm.setPower(rmvalue);
+                telemetry.addData("Runtime Seconds", runtime.seconds());
+                telemetry.addData("current_operation",operations[i]);
+                telemetry.addData("current_op_id",i);
 
-                    
-                    telemetry.update();
+                telemetry.update();
                 }
             }
         }
@@ -156,5 +157,6 @@ public class ftc2024_autonome extends LinearOpMode {
 
     }
 
+    }
 }
 
