@@ -63,7 +63,7 @@ public class ftc2024_autonome extends LinearOpMode {
         double wheel_rayon = (wheel_width)/2;
         double wheel_perimeter = wheel_rayon*2*Math.PI;
         double speed = (tour_par_minute/60)*wheel_perimeter;//dist per second
-        boolean mode = true;
+        boolean mode = false;
         
         YawPitchRollAngles robotOrientation;
         robotOrientation = imu.getRobotYawPitchRollAngles();
@@ -119,7 +119,7 @@ public class ftc2024_autonome extends LinearOpMode {
             {1.0,1.0},
             {-1.0,1.0},
             {-1.0,-1.0},
-          {1.0,-1.0}
+            {1.0,-1.0}
             };
             //mode Aurelien
         for(int i = 0; i<operations.length; i++){
