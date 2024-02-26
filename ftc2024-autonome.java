@@ -17,7 +17,6 @@ import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import com.qualcomm.robotcore.hardware.ImuOrientationOnRobot;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -63,7 +62,7 @@ public class ftc2024_autonome extends LinearOpMode {
         double wheel_rayon = (wheel_width)/2;
         double wheel_perimeter = wheel_rayon*2*Math.PI;
         double speed = (tour_par_minute/60)*wheel_perimeter;//dist per second
-        boolean mode = false;
+        boolean mode = true;
         
         YawPitchRollAngles robotOrientation;
         robotOrientation = imu.getRobotYawPitchRollAngles();
@@ -72,7 +71,7 @@ public class ftc2024_autonome extends LinearOpMode {
         double Pitch = robotOrientation.getPitch(AngleUnit.DEGREES);
         double Roll  = robotOrientation.getRoll(AngleUnit.DEGREES);
 
-		double yaw_sortie;
+        double yaw_sortie;
         
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -80,69 +79,92 @@ public class ftc2024_autonome extends LinearOpMode {
         runtime.reset();
         if (mode){
             //mode Elina
-            while (opModeIsActive() && Yaw <= 90.0) {
-                lm.setPower(0.5);
-                rm.setPower(-0.5);
-				robotOrientation = imu.getRobotYawPitchRollAngles();
+            /*while (opModeIsActive() && Yaw <= -90.0) {
+                lm.setPower(0.2);
+                rm.setPower(-0.2);
+                robotOrientation = imu.getRobotYawPitchRollAngles();
                 Yaw   = robotOrientation.getYaw(AngleUnit.DEGREES);
                 telemetry.addData("Yaw : ", Yaw);
                 telemetry.update();
-				yaw_sortie = Yaw;
+                
+            }*/
+            while (opModeIsActive() && Yaw < 90) {
+                lm.setPower(0.2);
+                rm.setPower(-0.2);
+                robotOrientation = imu.getRobotYawPitchRollAngles();
+                Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
+                telemetry.addData("Leg 1", runtime.seconds());
+                telemetry.addData("Yaw", Yaw);
+                telemetry.update();
             }
-			telemetry.addData("yaw_sortie", yaw_sortie);
             runtime.reset();
-            while (opModeIsActive() && (runtime.seconds() <= 121.92e-2/speed)) {
+            yaw_sortie = Yaw;
+            
+            telemetry.update();
+            
+            while (opModeIsActive()) {
+                lm.setPower(0.1);
+                rm.setPower(0.1);
+                robotOrientation = imu.getRobotYawPitchRollAngles();
+                Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
+                telemetry.addData("yaw_sortie", yaw_sortie);
+                telemetry.addData("Yaw", Yaw);
+                telemetry.update();
+                
+            }
+            /*while (opModeIsActive() && (runtime.seconds() <= 121.92e-2/speed)) {
                 lm.setPower(0.1);
                 rm.setPower(0.1);
                 telemetry.addData("Leg 2", runtime.seconds());
                 telemetry.update();
-            }
+            }*/
         }
         else{
-	        while(opModeIsActive()){
-		        Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
-		        if(Math.abs(Yaw-90.0)<=0.01){
-		            break;
-		        }
-		        else if((Yaw - 90.0) <0){
-		            lm.setPower((Math.abs(Yaw-90.0)/90)*0.5);
-		            rm.setPower(-(Math.abs(Yaw-90.0)/90)*0.5);
-		        }
-		        else{
-		            rm.setPower((Math.abs(Yaw-90.0)/90)*0.5);
-		            lm.setPower(-(Math.abs(Yaw-90.0)/90)*0.5);
-		        }
+        while(opModeIsActive()){
+        Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
+            if(Math.abs(Yaw-90.0)<=0.01){
+                break;
             }
-	if(false){
-        double[][] operations = {
-            {-1.0,1.0}, // vectors
-            {1.0,1.0},
-            {-1.0,1.0},
-            {-1.0,-1.0},
-            {1.0,-1.0}
-            };
-            //mode Aurelien
-        for(int i = 0; i<operations.length; i++){
-            double[] vec = operations[i];
-            double x = vec[0];
-            double y = vec[1];
-            double total_dist = (double) Math.sqrt(Math.pow(y,2)+Math.pow(x,2));
-            double time = time_for_dist(speed, total_dist);
-            double a = (-y+x)/Math.pow(2,1/2);
-            double b = (-y-x)/Math.pow(2,1/2);
-            double vmean = (Math.abs(a)+Math.abs(b))/2;
-            double lmvalue = (a/vmean);
-            double rmvalue = (b/vmean);
-            runtime.reset();
-                
-            while (opModeIsActive() && (runtime.seconds() <= time)) {
-                lm.setPower(lmvalue);
-                rm.setPower(rmvalue);
-                telemetry.addData("Runtime Seconds", runtime.seconds());
-                telemetry.addData("current_operation",operations[i]);
-                telemetry.addData("current_op_id",i);
+            else if((Yaw - 90.0) <0){
+                lm.setPower((Math.abs(Yaw-90.0)/90)*0.5);
+                rm.setPower(-(Math.abs(Yaw-90.0)/90)*0.5);
+            }
+            else{
+                rm.setPower((Math.abs(Yaw-90.0)/90)*0.5);
+                lm.setPower(-(Math.abs(Yaw-90.0)/90)*0.5);
+            }
 
-                telemetry.update();
+            if(false){
+                double[][] operations = {
+                    {-1.0,1.0}, // vectors
+                    {1.0,1.0},
+                    {-1.0,1.0},
+                    {-1.0,-1.0},
+                    {1.0,-1.0}
+                };
+                //mode Aurelien
+                for(int i = 0; i<operations.length; i++){
+                    double[] vec = operations[i];
+                    double x = vec[0];
+                    double y = vec[1];
+                    double total_dist = (double) Math.sqrt(Math.pow(y,2)+Math.pow(x,2));
+                    double time = time_for_dist(speed, total_dist);
+                    double a = (-y+x)/Math.pow(2,1/2);
+                    double b = (-y-x)/Math.pow(2,1/2);
+                    double vmean = (Math.abs(a)+Math.abs(b))/2;
+                    double lmvalue = (a/vmean);
+                    double rmvalue = (b/vmean);
+                    runtime.reset();
+                    while (opModeIsActive() && (runtime.seconds() <= time)) {
+                        lm.setPower(lmvalue);
+                        rm.setPower(rmvalue);
+                        telemetry.addData("Runtime Seconds", runtime.seconds());
+                        telemetry.addData("current_operation",operations[i]);
+                        telemetry.addData("current_op_id",i);
+
+                    
+                        telemetry.update();
+                    }
                 }
             }
         }
@@ -154,9 +176,9 @@ public class ftc2024_autonome extends LinearOpMode {
 
         telemetry.update();
         // run until the end of the match (driver presses STOP
-
     }
 
-    }
+}
+
 }
 
