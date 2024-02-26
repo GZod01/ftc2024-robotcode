@@ -46,18 +46,13 @@ public class ftc2024_autonome_test extends LinearOpMode {
         YawPitchRollAngles robotOrientation;
         double Yaw   = robotOrientation.getYaw(AngleUnit.DEGREES);
         double yaw_sortie;
-        double a;
-        double a1;
-        double b;
-        double b1;
-        double k;
-        double k1;
 
         waitForStart();
 
         while (opModeIsActive()){
             double [] lm_p = {0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1};
             double [] rm_p = {-0.1,-0.2,-0.3,-0.4,-0.5,-0.6,-0.7,-0.8,-0.9,-1};
+            double [] x = new double[lm_p.length];
             for(int i = 0; i< lm_p.length; i++){
                 while (opModeIsActive() && Yaw < 90){
                     lm.setPower = lm_p[i];
@@ -70,7 +65,7 @@ public class ftc2024_autonome_test extends LinearOpMode {
                 telemetry.addData("Yaw sortie", yaw_sortie);
                 telemetry.update();
                 Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
-                double [] x = Yaw - yaw_sortie;
+                x [i]= Yaw - yaw_sortie;
                               
                 
                 
