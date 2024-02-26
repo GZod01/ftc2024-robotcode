@@ -30,7 +30,7 @@ public class ftc2024_autonome_test extends LinearOpMode {
         lm = hardwareMap.get (DcMotor.class, "lm");
         rm = hardwareMap.get (DcMotor.class, "rm");
 
-        rm.setDirection(DcMotorSimple.Direction.REVERSE);
+        rm.setDirection(DcMotor.Direction.REVERSE);
         
         imu = hardwareMap.get(IMU.class, "imu");
         imu.initialize(
@@ -42,10 +42,10 @@ public class ftc2024_autonome_test extends LinearOpMode {
             )
             );
         imu.resetYaw();
-
         YawPitchRollAngles robotOrientation;
+        robotOrientation = imu.getRobotYawPitchRollAngles();
         double Yaw   = robotOrientation.getYaw(AngleUnit.DEGREES);
-        double yaw_sortie;
+        double yaw_sortie = 0.0;
 
         waitForStart();
 
@@ -55,8 +55,8 @@ public class ftc2024_autonome_test extends LinearOpMode {
             double [] x = new double[lm_p.length];
             for(int i = 0; i< lm_p.length; i++){
                 while (opModeIsActive() && Yaw < 90){
-                    lm.setPower = lm_p[i];
-                    rm.setPower = rm_p[i];
+                    lm.setPower(lm_p[i]);
+                    rm.setPower(rm_p[i]);
                     Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
                     telemetry.addData("Yaw : ", Yaw);
                     telemetry.update();
