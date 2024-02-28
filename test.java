@@ -27,8 +27,8 @@ public class ftc2024_autonome_test extends LinearOpMode {
     @Override
 
     public void runOpMode() {
-        lm = hardwareMap.get (DcMotor.class, "lm");
-        rm = hardwareMap.get (DcMotor.class, "rm");
+        lm = hardwareMap.get (DcMotor.class, "blm");
+        rm = hardwareMap.get (DcMotor.class, "brm");
 
         rm.setDirection(DcMotor.Direction.REVERSE);
         
@@ -52,88 +52,51 @@ public class ftc2024_autonome_test extends LinearOpMode {
         while (opModeIsActive()){
             double [] lm_p = {0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1};
             double [] rm_p = {-0.1,-0.2,-0.3,-0.4,-0.5,-0.6,-0.7,-0.8,-0.9,-1};
+            double [] y = new double[lm_p.length];
             double [] x = new double[lm_p.length];
+            
             for(int i = 0; i< lm_p.length; i++){
                 while (opModeIsActive() && Yaw < 90){
                     lm.setPower(lm_p[i]);
                     rm.setPower(rm_p[i]);
+                    robotOrientation = imu.getRobotYawPitchRollAngles();
                     Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
-                    telemetry.addData("Yaw : ", Yaw);
+                    telemetry.addData("Yaw ", Yaw);
+                    telemetry.addData("I", i);
                     telemetry.update();
-                    yaw_sortie = Yaw;
-                }
-                telemetry.addData("Yaw sortie", yaw_sortie);
-                telemetry.update();
+                    }
+                
+                lm.setPower(0);
+                rm.setPower(0);
+                
+                robotOrientation = imu.getRobotYawPitchRollAngles();
                 Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
-                x [i]= Yaw - yaw_sortie;
-                              
                 
+                x [i]= Yaw - 90.0;
                 
-                /*if (i = 0) {
-                    Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
-                    a = yaw_sortie;
-                    a1 = Yaw;
-                }
-                if (i = 1){
-                    Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
-                    b = yaw_sortie;
-                    b1 = Yaw;
-                }
-                if (i = 2){
-                    Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
-                    double c = yaw_sortie;
-                    double c1 = Yaw;
-                }
-                if (i = 3){
-                    Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
-                    double d = yaw_sortie;
-                    double d1 = Yaw;
-                }
-                if (i = 4){
-                    Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
-                    double e = yaw_sortie;
-                    double e1 = Yaw;
-                }
-                if (i = 5){
-                    Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
-                    double f = yaw_sortie;
-                    double f1 = Yaw;
-                }
-                if (i = 6){
-                    Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
-                    double g = yaw_sortie;
-                    double g1 = Yaw;
-                }
-                if (i = 7){
-                    Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
-                    double h = yaw_sortie;
-                    double h1 = Yaw;
-                }
-                if (i = 8){
-                    Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
-                    double j = yaw_sortie;
-                    double j1 = Yaw;
-                }
-                if (i = 9){
-                    Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
-                    k = yaw_sortie;
-                    k1 = Yaw;
-                }
-                */
                 imu.resetYaw();
+                robotOrientation = imu.getRobotYawPitchRollAngles();
+                Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
+                telemetry.addData("Yaw", Yaw);
+                telemetry.update();
+                /*
+                Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
+                telemetry.addData("Yaw", Yaw);
+                telemetry.update();*/
             }
-            
-
-            telemetry.addData("0.1", x[0]);
-            telemetry.addData("0.2", x[1]);
-            telemetry.addData("0.3", x[2]);
-            telemetry.addData("0.4", x[3]);
-            telemetry.addData("0.5", x[4]);
-            telemetry.addData("0.6", x[5]);
-            telemetry.addData("0.7", x[6]);
-            telemetry.addData("0.8", x[7]);
-            telemetry.addData("0.9", x[8]);
-            telemetry.addData("1", x[9]);
+            while (opModeIsActive()){
+                telemetry.addData("0.1", x[0]);
+                telemetry.addData("0.2", x[1]);
+                telemetry.addData("0.3", x[2]);
+                telemetry.addData("0.4", x[3]);
+                telemetry.addData("0.5", x[4]);
+                telemetry.addData("0.6", x[5]);
+                telemetry.addData("0.7", x[6]);
+                telemetry.addData("0.8", x[7]);
+                telemetry.addData("0.9", x[8]);
+                telemetry.addData("1", x[9]);
+                telemetry.update();
+            }
         }
     }
 }
