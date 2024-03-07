@@ -57,7 +57,7 @@ public class ftc2024_autonome_api extends LinearOpMode {
         double right_multiplier = ((double) Math.signum(angle));
         double m_power = motor_speed;
         while(opModeIsActive() && (Math.abs(robotOrientation.getYaw(AngleUnit.DEGREES) - start_yaw) < Math.abs(angle)){
-            m_power = //relative 
+            m_power = (Math.abs(robotOrientation.getYaw(AngleUnit.DEGREES)-start_yaw));//relative 
             lm.setPower(left_multiplier*m_power);
             rm.setPower(right_multiplier*m_power);
         }
