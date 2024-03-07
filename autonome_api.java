@@ -52,7 +52,9 @@ public class ftc2024_autonome_api extends LinearOpMode {
     }
     public void rotate(double angle, double motor_speed=1.0){
         double start_yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
-        angle = Math.toDegrees(Math.atan(Math.tan(Math.toRadians(angle))));
+        angle = 200.0;
+        double anglerad = Math.toRadians(angle);
+        angle = Math.toDegrees(Math.atan2(Math.sin(anglerad),Math.cos(anglerad)));
         double left_multiplier = -( (double) Math.signum(angle));
         double right_multiplier = ((double) Math.signum(angle));
         double m_power = motor_speed;
