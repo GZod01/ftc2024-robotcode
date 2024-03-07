@@ -93,8 +93,8 @@ public class ftc2024_autonome_api extends LinearOpMode {
         waitForStart();
 
         if(opModeIsRunning()){
-            forward(2);
-            rotate(90);
+            forward(0.5);
+            rotate(-90);
             forward(2);
     }
 }
