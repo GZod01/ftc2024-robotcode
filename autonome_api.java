@@ -22,6 +22,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class ftc2024_autonome_api extends LinearOpMode {
     private DcMotor rm;
     private DcMotor lm;
+    private DcMotor harvestmotor;
     private IMU imu;
     private final double wheel_width = 9.0e-2; // metres
     private final double wheel_perimeter = Math.PI * wheel_width;
@@ -50,6 +51,12 @@ public class ftc2024_autonome_api extends LinearOpMode {
       lm.setPower(0);
       rm.setPower(0);
     }
+    public void backward(double n_tiles, double motor_speed= 1.0){
+        forward(n_tiles, -motor_speed);
+    }
+    public void harvest(double motor_speed=0.0){
+        harvestmotor.setPower(motor_speed);
+    }
     public void rotate(double angle, double motor_speed=1.0){
         double start_yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
         angle = 200.0;
@@ -72,6 +79,7 @@ public class ftc2024_autonome_api extends LinearOpMode {
     public void runOpMode() {
         lm = hardwareMap.get (DcMotor.class, "blm");
         rm = hardwareMap.get (DcMotor.class, "brm");
+        harvestmotor = hardwareMap.get(DcMotor.class, "flm");
 
         rm.setDirection(DcMotor.Direction.REVERSE);
         
@@ -94,7 +102,10 @@ public class ftc2024_autonome_api extends LinearOpMode {
 
         if(opModeIsRunning()){
             forward(0.5);
-            rotate(-90);
-            forward(2);
+            rotate(-90.0);
+            forward(1.5);
+            harvest(-1);
+            backward(1);
+            harvest(0);
     }
 }
