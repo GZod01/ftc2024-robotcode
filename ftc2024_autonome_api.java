@@ -80,7 +80,8 @@ public class ftc2024_autonome_api extends LinearOpMode {
 		    robot.harvest(0);
 		    break;
 		case ("r4d"):
-
+			
+			
 		    break;
 		case ("r2d"):
 
