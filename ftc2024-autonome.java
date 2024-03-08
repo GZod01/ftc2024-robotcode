@@ -42,6 +42,7 @@ public class ftc2024_autonome_test extends LinearOpMode {
             )
             );
         imu.resetYaw();
+	YawPitchRollAngle robotOrientation;
         double Yaw   = robotOrientation.getYaw(AngleUnit.DEGREES);
         double yaw_sortie = 0.0;
 
