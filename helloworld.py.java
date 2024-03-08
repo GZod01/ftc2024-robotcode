@@ -1,4 +1,7 @@
-String pythonCode = """abc = \"\"\"
+String pythonCode = "code in comment";
+/*
+```py
+abc = """
 booledan already_//CURR// = false;
 if(gamepad1.//CURR// && !already_//CURR//){
     already_//CURR// =! already_//CURR//;
@@ -8,7 +11,7 @@ if (!gamepad1.//CURR// && already_//CURR//){
     already_//CURR// =! already_//CURR//;
 }
 
-\"\"\";
+""";
 defg = "";
 
 hijk = "abcdefghijklmnopqrstuvwxyz";
@@ -17,4 +20,5 @@ for i in hijk:
     defg += abc.replace("//CURR//",i);
 
 print(defg);
-""";
+```
+*/
