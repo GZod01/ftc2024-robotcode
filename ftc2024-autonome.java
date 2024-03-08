@@ -44,21 +44,21 @@ public class ftc2024_autonome extends LinearOpMode {
      */
     public double runPid(double angle2go){
         robotOrientation = imu.getRobotYawPitchRollAngles();
-	angle2go = (angle2go*180)/Math.PI
-	double yaw = robotOrientation.getYaw(AngleUnit.RADIANS);
-	double lastPos;
-	// command -1.0<command<1.0
-	double command = (angle2go-yaw)/2*Math.PI;
+	angle2go = (angle2go*180)/Math.PI;
+	double P = 0.5;
 	while (opModeIsActive()){
 	    yaw = robotOrientation.getYaw(AngleUnit.RADIANS);
 	    double currentPos = yaw;
-	    double error = currentPos-lastPos;
-	    lastPos = currentPos;
-	    command += P * error;
+	    double error = yaw-currentpos;
+	    double command = (P * error)/Math.PI;
+	    command = clamp(command,.6); 
 	    lm.setPower(command);
 	    rm.setPower(-command);
 	}
 
+    }
+    double clamp(double value, double max) {
+        return Math.max(-max, Math.min(max, value));
     }
 
     @Override
