@@ -46,7 +46,7 @@ public class ftc2024_autonome_api extends LinearOpMode {
 		    )
 		);
 	imu.resetYaw();
-	YawPitchRollAngle robotOrientation;
+	YawPitchRollAngle robotOrientation; // FTC2024WeRobotControl à besoin de robotOrientation comme variable de Parent (donc de cette classe actuelle), n'est il pas posible de définir robotOrientation dans la classe
 	FTC2024WeRobotControl robot = FTC2024WeRobotControl(this);
 
 	waitForStart();
