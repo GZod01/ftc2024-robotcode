@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-import fr.werobot.ftc2024.robotcontrol.FTC2024WeRobotControl;
+import fr.werobot.ftc2024.robotcontrol.FTC2024WeRobotControl; //a tester car pas sur que ça fonctionne
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 

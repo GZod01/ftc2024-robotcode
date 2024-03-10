@@ -1,4 +1,4 @@
-package fr.werobot.ftc2024.robotcontrol;
+package fr.werobot.ftc2024.robotcontrol;//a tester car pas sur que ça fonctionne
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
