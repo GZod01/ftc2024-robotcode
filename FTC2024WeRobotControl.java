@@ -148,7 +148,4 @@ public class FTC2024WeRobotControl {
         Parent.lm.setPower(0);
         Parent.rm.setPower(0);
     }
-    public void test_forward_10_and_rotate_20deg(){
-
-    }
 }
