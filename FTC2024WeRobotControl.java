@@ -49,7 +49,14 @@ public class FTC2024WeRobotControl {
     public FTC2024WeRobotControl(LinearOpMode Parent) {
         this.Parent = Parent;
     }
-
+    /*
+     * test if motorSpeed is >= 0
+     */
+    public void testMotorSpeed(double motor_speed){
+        if(!((double)motor_speed>=0.0)){
+            throw new Exception("Motor Speed MUST be >= 0");
+        }
+    }
     /*
      * return a metre/sec speed
      * 
@@ -57,9 +64,13 @@ public class FTC2024WeRobotControl {
      * to 1
      */
     public double getSpeedFromMotorSpeed(double motor_speed) {
+        testMotorSpeed(motor_speed);
         double speed_tour_par_minutes = this.tour_par_minutes * motor_speed;
         double speed = (speed_tour_par_minutes / 60) * this.wheel_perimeter;
         return speed;
+    }
+    public double getSpeedFromMotorSpeed(){
+        this.getSpeedFromMotorSpeed(1);
     }
 
     /*
@@ -71,8 +82,12 @@ public class FTC2024WeRobotControl {
      * to 1
      */
     public double time_for_dist(double dist, double motor_speed) {
+        testMotorSpeed(motor_speed);
         double speed = getSpeedFromMotorSpeed(motor_speed);
         return (dist / speed);
+    }
+    public double time_for_dist(double dist){
+        this.time_for_dist(dist,1);
     }
 
     /*
@@ -85,6 +100,7 @@ public class FTC2024WeRobotControl {
      * to 1
      */
     public void forward(double n_tiles, double motor_speed) {
+        testMotorSpeed(motor_speed);
         double total_time = time_for_dist(n_tiles * ground_tiles_width, motor_speed);
         double start_time = Parent.runtime.seconds();
         while (Parent.opModeIsActive() && ((Parent.runtime.seconds() - start_time) < total_time)) {
@@ -109,7 +125,11 @@ public class FTC2024WeRobotControl {
      * to 1
      */
     public void backward(double n_tiles, double motor_speed) {
+        testMotorSpeed(motor_speed);
         forward(n_tiles, -motor_speed);
+    }
+    public void backward(double n_tiles){
+        this.forward(n_tiles,1);
     }
 
     /*
@@ -121,7 +141,9 @@ public class FTC2024WeRobotControl {
     public void harvest(double motor_speed) {
         Parent.harvestmotor.setPower(motor_speed);
     }
-
+    public void harvest(){
+        this.harvest(1);
+    }
     /*
      * harvest
      * 
@@ -147,5 +169,8 @@ public class FTC2024WeRobotControl {
         }
         Parent.lm.setPower(0);
         Parent.rm.setPower(0);
+    }
+    public void rotate(douvle angle){
+        this.rotate(tour_par_minutes, 1);
     }
 }
