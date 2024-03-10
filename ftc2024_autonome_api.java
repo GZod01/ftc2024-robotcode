@@ -160,6 +160,7 @@ public class ftc2024_autonome_api extends LinearOpMode {
 			robot.harvest(-1);
 			robot.backward(1);
 			robot.harvest(0);
+			break;
 	    }
 	}
     }
