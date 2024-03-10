@@ -27,6 +27,7 @@ public class ftc2024_autonome_api extends LinearOpMode {
     public DcMotor rm;
     public DcMotor harvestmotor;
     public IMU imu;
+	public YawPitchRollAngle robotOrientation;
     
     @Override
     public void runOpMode() {
@@ -46,7 +47,7 @@ public class ftc2024_autonome_api extends LinearOpMode {
 		    )
 		);
 	imu.resetYaw();
-	YawPitchRollAngle robotOrientation; // FTC2024WeRobotControl à besoin de robotOrientation comme variable de Parent (donc de cette classe actuelle), n'est il pas posible de définir robotOrientation dans la classe
+	// YawPitchRollAngle robotOrientation; // FTC2024WeRobotControl à besoin de robotOrientation comme variable de Parent (donc de cette classe actuelle), n'est il pas posible de définir robotOrientation dans la classe?
 	FTC2024WeRobotControl robot = FTC2024WeRobotControl(this);
 
 	waitForStart();
@@ -66,7 +67,7 @@ public class ftc2024_autonome_api extends LinearOpMode {
 	    switch (autonomous_mode){
 		default: 
 		    robot.forward(0.5);
-		    robot.rotate(-90.0);
+		    robot.rotate((-90));
 		    robot.forward(1.5);
 		    robot.harvest(-1);
 		    robot.backward(1);
@@ -74,7 +75,7 @@ public class ftc2024_autonome_api extends LinearOpMode {
 		    break;
 		case ("b2d"):
 		    robot.forward(0.5);
-		    robot.rotate(-90.0);
+		    robot.rotate((-90));
 		    robot.forward(2.5);
 		    robot.harvest(-1);
 		    robot.backward(1);
@@ -82,7 +83,7 @@ public class ftc2024_autonome_api extends LinearOpMode {
 		    break;
 		case ("r4d"):
 			robot.forward(0.5);
-			robot.rotate(90.0);
+			robot.rotate(90);
 			robot.forward(1.5);
 			robot.harvest(-1);
 			robot.backward(1);
@@ -90,25 +91,75 @@ public class ftc2024_autonome_api extends LinearOpMode {
 		    break;
 		case ("r2d"):
 			robot.forward(0.5);
-			robot.rotate(90.0);
+			robot.rotate(90);
 			robot.forward(2.5);
 			robot.harvest(-1);
 			robot.backward(1);
 			robot.harvest(0);
 		    break;
-
 		case ("b4n"):
-
+			robot.forward(1.5);
+			robot.rotate(90);
+			robot.harvest();
+			robot.forward(3);
+			robot.harvest(0);
+			robot.rotate(180);
+			robot.forward(1);
+			robot.rotate(-90);
+			robot.forward(1);
+			robot.rotate(90);
+			robot.forward(2.5);
+			robot.harvest(-1);
+		    robot.backward(1);
+		    robot.harvest(0);
 		    break;
 		case ("b2n"):
-		    
+			robot.forward(1.5);
+			robot.rotate(90);
+			robot.harvest();
+			robot.forward(1);
+			robot.harvest(0);
+			robot.rotate(180);
+			robot.forward(1);
+			robot.rotate(-90);
+			robot.forward(1);
+			robot.rotate(90);
+			robot.forward(2.5);
+			robot.harvest(-1);
+			robot.backward(1);
+			robot.harvest(0);
 		    break;
-		case ("r4n"): 
-		    
+		case ("r4n"):
+			robot.forward(1.5);
+			robot.rotate(-90);
+			robot.harvest();
+			robot.forward(3);
+			robot.harvest(0);
+			robot.rotate(180);
+			robot.forward(1);
+			robot.rotate(90);
+			robot.forward(1);
+			robot.rotate(-90);
+			robot.forward(2.5);
+			robot.harvest(-1);
+		    robot.backward(1);
+		    robot.harvest(0);
 		    break;
 		case ("r2n"):
-
-		    break;
+			robot.forward(1.5);
+			robot.rotate(-90);
+			robot.harvest();
+			robot.forward(1);
+			robot.harvest(0);
+			robot.rotate(180);
+			robot.forward(1);
+			robot.rotate(90);
+			robot.forward(1);
+			robot.rotate(-90);
+			robot.forward(2.5);
+			robot.harvest(-1);
+			robot.backward(1);
+			robot.harvest(0);
 	    }
 	}
     }
