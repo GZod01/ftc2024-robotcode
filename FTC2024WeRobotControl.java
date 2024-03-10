@@ -95,6 +95,10 @@ public class FTC2024WeRobotControl {
         Parent.rm.setPower(0);
     }
 
+    public void forward(double n_tiles){
+        this.forward(n_tiles,1);
+    }
+
     /*
      * go backward
      * 
