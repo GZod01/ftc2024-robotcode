@@ -63,20 +63,11 @@ public class FTC2024WeRobotControl {
      * to 1
      */
     public double getSpeedFromMotorSpeed(double motor_speed) {
-        testMotorSpeed(motor_speed);
         double speed_tour_par_minutes = this.tour_par_minutes * motor_speed;
         double speed = (speed_tour_par_minutes / 60) * this.wheel_perimeter;
         return speed;
     }
 
-    /*
-     * test if motorSpeed is >= 0
-     */
-    public void testMotorSpeed(double motor_speed){
-        if(!((double)motor_speed>=0.0)){
-            throw new Exception("Motor Speed MUST be >= 0");
-        }
-    }
     /*
      * return the needed time for a distance
      * 
@@ -86,7 +77,6 @@ public class FTC2024WeRobotControl {
      * to 1
      */
     public double time_for_dist(double dist, double motor_speed) {
-        testMotorSpeed(motor_speed);
         double speed = getSpeedFromMotorSpeed(motor_speed);
         return (dist / speed);
     }
@@ -101,7 +91,6 @@ public class FTC2024WeRobotControl {
      * to 1
      */
     public void forward(double n_tiles, double motor_speed) {
-        testMotorSpeed(motor_speed);
         double total_time = time_for_dist(n_tiles * ground_tiles_width, motor_speed);
         timer.reset();
         while (Parent.opModeIsActive() && timer.seconds() < total_time) {
@@ -126,7 +115,6 @@ public class FTC2024WeRobotControl {
      * to 1
      */
     public void backward(double n_tiles, double motor_speed) {
-        testMotorSpeed(motor_speed);
         forward(n_tiles, -motor_speed);
     }
     
@@ -141,11 +129,7 @@ public class FTC2024WeRobotControl {
      * to 1
      */
     public void harvest(double motor_speed) {
-        testMotorSpeed(motor_speed);
         Parent.harvestmotor.setPower(motor_speed);
-    }
-    public void harvest(){
-        this.harvest(1);
     }
 
     /*
@@ -157,10 +141,8 @@ public class FTC2024WeRobotControl {
      * to 1
      */
     public void rotate(double angle, double motor_speed){
-        testMotorSpeed(motor_speed);
         robotOrientation = Parent.imu.getRobotYawPitchRollAngles();
         double start_yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
-        angle = 200.0;
         double anglerad = Math.toRadians(angle);
         angle = Math.toDegrees(Math.atan2(Math.sin(anglerad),Math.cos(anglerad)));
         double left_multiplier = -((double) Math.signum(angle));
@@ -168,6 +150,9 @@ public class FTC2024WeRobotControl {
         double m_power = motor_speed;
         while(Parent.opModeIsActive() && (Math.abs(robotOrientation.getYaw(AngleUnit.DEGREES) - start_yaw) < Math.abs(angle))){
             robotOrientation = Parent.imu.getRobotYawPitchRollAngles();
+            double yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
+            Parent.telemetry.addData("Yaw", yaw);
+            Parent.telemetry.update();
             m_power = (Math.abs(robotOrientation.getYaw(AngleUnit.DEGREES)-start_yaw));//relative 
             Parent.lm.setPower(left_multiplier*m_power);
             Parent.rm.setPower(right_multiplier*m_power);
@@ -177,5 +162,9 @@ public class FTC2024WeRobotControl {
     }
     public void rotate(double angle){
         this.rotate(angle,1.0);
+    }
+    
+    public void test_forward_10_and_rotate_20deg(){
+
     }
 }
