@@ -27,7 +27,7 @@ public class ftc2024_autonome_api extends LinearOpMode {
     public DcMotor rm;
     public DcMotor harvestmotor;
     public IMU imu;
-    public YawPitchRollAngle robotOrientation;
+    
     @Override
     public void runOpMode() {
 	lm = hardwareMap.get(DcMotor.class, "blm");
@@ -46,6 +46,7 @@ public class ftc2024_autonome_api extends LinearOpMode {
 		    )
 		);
 	imu.resetYaw();
+	YawPitchRollAngle robotOrientation;
 	FTC2024WeRobotControl robot = FTC2024WeRobotControl(this);
 
 	waitForStart();
