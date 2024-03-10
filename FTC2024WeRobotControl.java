@@ -46,7 +46,7 @@ public class FTC2024WeRobotControl {
      * constructing the class directly in
      */
 
-    public FTC2024WeRobotControl(YawPitchhRollAngle Parent) {
+    public FTC2024WeRobotControl(LinearOpMode Parent) {
         this.Parent = Parent;
     }
 
