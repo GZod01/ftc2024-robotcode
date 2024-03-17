@@ -278,8 +278,10 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
 				}else{
 					already_up = true;
 				}
-                panier1.setTargetPosition(targetPos);
-                panier2.setTargetPosition(targetPos);				
+                lmelevator.setTargetPosition(targetPos);
+                rmelevator.setTargetPosition(targetPos);	
+				lmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+				rmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 			}else if (!gamepad1.dpad_up && already_up){
 				already_up = false;
 			}else if (!gamepad1.dpad_down && already_down){
@@ -295,7 +297,6 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
 			telemetry.addData("rpow", rpower);
 			telemetry.addData("ltrigg", t);
 			telemetry.addData("t2", t2);
-			telemetry.addData("mode", mode);
 			// Create an object to receive the IMU angles
 			YawPitchRollAngles robotOrientation;
 			robotOrientation = imu.getRobotYawPitchRollAngles();
