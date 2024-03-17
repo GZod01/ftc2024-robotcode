@@ -34,13 +34,13 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
 
 	private DcMotor moissoneuse;
 
-	private DcMotor lmelevator;
+	private DcMotorEx lmelevator;
 
-	private DcMotor rmelevator;
+	private DcMotorEx rmelevator;
 
-	private DcMotor box;
+	private DcMotorEx box;
 
-	private DcMotor rotation;
+	private DcMotorEx rotation;
 
 	private IMU imu;
 
@@ -100,6 +100,10 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
 
 		boolean already_x = false;
 
+		boolean already_up = false;
+
+		boolean already_down = false;
+
 		telemetry.addData("Status", "Initialized");
 
 		telemetry.update();
@@ -110,19 +114,19 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
 
 		moissoneuse = hardwareMap.get(DcMotor.class, "moissonneuse");
 
-		lmelevator = hardwareMap.get(DcMotor.class, "ltrselv");
+		lmelevator = hardwareMap.get(DcMotorEx.class, "ltrselv");
 		lmelevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 		lmelevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-		rmelevator = hardwareMap.get(DcMotor.class, "rtrselv");
+		rmelevator = hardwareMap.get(DcMotorEx.class, "rtrselv");
 		rmelevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 		rmelevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-		rotation = hardwareMap.get(DcMotor.class, "elvRot");
+		rotation = hardwareMap.get(DcMotorEx.class, "elvRot");
 		rotation.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 		rotation.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-		box = hardwareMap.get(DcMotor.class, "boxRot");
+		box = hardwareMap.get(DcMotorEx.class, "boxRot");
 		box.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 		box.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -261,8 +265,28 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
 				}
 			}
 			if (!gamepad1.b && already_b) {
-				already_b = !already_b;
+				already_b = false;
 			}
+			if ((gamepad1.dpad_up && !already_up)^(gamepad1.dpad_down && !already_down)){
+				lmelevator.setVelocity(100);
+				rmelevator.setVelocity(100);
+				Long targetPosLong = (Long) Math.round(288*3.45);
+                int targetPos = targetPosLong.intValue();
+				if (gamepad1.dpad_down){
+					targetPos = 0;
+					already_down = true;
+				}else{
+					already_up = true;
+				}
+                panier1.setTargetPosition(targetPos);
+                panier2.setTargetPosition(targetPos);				
+			}else if (!gamepad1.dpad_up && already_up){
+				already_up = false;
+			}else if (!gamepad1.dpad_down && already_down){
+				already_down = false;
+			}
+
+
 			
 
 			telemetry.addData("x", x);
