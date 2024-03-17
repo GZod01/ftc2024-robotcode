@@ -20,3 +20,13 @@ robot.rotate(angle_to_rotate, speed_for_motors);
 ```
 
 Read the FTC2024WeRobotControl.java file to get complete docs.
+
+
+## CarLike Controls:
+
+monter élévateur: dpad\_up
+baisser élévateur: dpad\_down
+moissoneuse: b
+moissoneuse reverse: b + right\_bumber 
+déplacement: left\_joystick
+
