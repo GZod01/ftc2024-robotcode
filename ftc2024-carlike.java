@@ -249,27 +249,21 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
 			rm.setPower(rpower);
 
 			if (gamepad1.b && !already_b) {
+				double moissoneuseSpeed = 1.0;
+				if (gamepad1.right_bumper){
+					moissoneuseSpeed = -1.0;
+				}
 				already_b = !already_b;
-				if (moissoneuse.getPower() == 1.0) {
+				if (moissoneuse.getPower() == moissoneuseSpeed) {
 					moissoneuse.setPower(0);
 				} else {
-					moissoneuse.setPower(1);
+					moissoneuse.setPower(moissoneuseSpeed);
 				}
 			}
 			if (!gamepad1.b && already_b) {
 				already_b = !already_b;
 			}
-			if (gamepad1.x && !already_x) {
-				already_x = !already_x;
-				if (moissoneuse.getPower() == -1.0) {
-					moissoneuse.setPower(0);
-				} else {
-					moissoneuse.setPower(-1);
-				}
-				if (!gamepad1.x && already_x) {
-					already_x = !already_x;
-				}
-			}
+			
 
 			telemetry.addData("x", x);
 			telemetry.addData("y", y);
