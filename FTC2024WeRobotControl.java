@@ -38,6 +38,8 @@ public class FTC2024WeRobotControl {
      * the width size of the tiles on the ground in metres
      */
     private final double ground_tiles_width = 61.0e-2; // metres
+						       //
+    private final double defaultspeed = 0.6;
     
     private ElapsedTime timer;
      
@@ -102,7 +104,7 @@ public class FTC2024WeRobotControl {
     }
 
     public void forward(double n_tiles){
-        this.forward(n_tiles,1);
+        this.forward(n_tiles,this.defaultspeed);
     }
 
     /*
@@ -119,7 +121,7 @@ public class FTC2024WeRobotControl {
     }
     
     public void backward(double n_tiles){
-        this.backward(n_tiles,1);
+        this.backward(n_tiles,this.defaultspeed);
     }
 
     /*
@@ -167,7 +169,7 @@ public class FTC2024WeRobotControl {
         Parent.rm.setPower(0);
     }
     public void rotate(double angle){
-        this.rotate(angle,1.0);
+        this.rotate(angle,this.defaultspeed);
     }
     
     public void test_forward_10_and_rotate_20deg(){
