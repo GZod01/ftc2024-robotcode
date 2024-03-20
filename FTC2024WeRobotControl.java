@@ -40,6 +40,7 @@ public class FTC2024WeRobotControl {
     private final double ground_tiles_width = 61.0e-2; // metres
 						       //
     private final double defaultspeed = 0.6;
+    private final double defaultanglespeed = 0.4;
     
     private ElapsedTime timer;
      
@@ -169,7 +170,7 @@ public class FTC2024WeRobotControl {
         Parent.rm.setPower(0);
     }
     public void rotate(double angle){
-        this.rotate(angle,this.defaultspeed);
+        this.rotate(angle,this.defaultanglespeed);
     }
     
     public void test_forward_10_and_rotate_20deg(){
