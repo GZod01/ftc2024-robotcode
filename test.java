@@ -49,7 +49,7 @@ public class ftc2024_autonome_test extends LinearOpMode {
 
         waitForStart();
 
-        while (opModeIsActive()){
+        if (opModeIsActive()){
             double [] lm_p = {0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1};
             double [] rm_p = {-0.1,-0.2,-0.3,-0.4,-0.5,-0.6,-0.7,-0.8,-0.9,-1};
             double [] y = new double[lm_p.length];
