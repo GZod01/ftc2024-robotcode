@@ -148,7 +148,7 @@ public class FTC2024WeRobotControl {
         double left_multiplier = -((double) Math.signum(angle));
         double right_multiplier = ((double) Math.signum(angle));
         double m_power = motor_speed;
-	if(Math.abs(angle)===180){
+	if(Math.abs(angle)==180){
 	    angle = (double) ( ( (double) Math.signum(angle) ) * 179.9 );
 	}
         while(Parent.opModeIsActive() && (Math.abs(robotOrientation.getYaw(AngleUnit.DEGREES) - start_yaw) < Math.abs(angle))){
