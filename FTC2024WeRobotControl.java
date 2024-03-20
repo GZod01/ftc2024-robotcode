@@ -131,9 +131,12 @@ public class FTC2024WeRobotControl {
     public void harvest(double motor_speed) {
         Parent.harvestmotor.setPower(motor_speed);
     }
+    public void harvest() {
+        Parent.harvestmotor.setPower(1.0);
+    }
 
     /*
-     * harvest
+     * rotate
      * 
      * @param angle = the angle to rotate (in degrees)
      * 
