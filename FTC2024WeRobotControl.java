@@ -132,7 +132,7 @@ public class FTC2024WeRobotControl {
         Parent.harvestmotor.setPower(motor_speed);
     }
     public void harvest() {
-        Parent.harvestmotor.setPower(1.0);
+	this.harvest(1.0);
     }
 
     /*
