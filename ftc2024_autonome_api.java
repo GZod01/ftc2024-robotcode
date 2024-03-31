@@ -32,7 +32,11 @@ public class Ftc2024_autonome_api extends LinearOpMode {
 	public void runOpMode() {
 		lm = hardwareMap.get(DcMotor.class, "blm");
 		rm = hardwareMap.get(DcMotor.class, "brm");
-		harvestmotor = hardwareMap.get(DcMotor.class, "flm");
+<<<<<<< HEAD
+		harvestmotor = hardwareMap.get(DcMotor.class, "moissonneuse");
+=======
+		harvestmotor = hardwareMap.get(DcMotor.class, "moissoneuse");
+>>>>>>> a8ae6d3 (hello)
 
 		rm.setDirection(DcMotor.Direction.REVERSE);
 

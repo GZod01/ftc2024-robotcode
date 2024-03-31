@@ -329,10 +329,7 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
             if (gamepad1.right_bumper && gamepad1.left_bumper){
                 // launch the plane
             }
-
-
             
-
             telemetry.addData("x", x);
             telemetry.addData("y", y);
             telemetry.addData("lpow", lpower);
