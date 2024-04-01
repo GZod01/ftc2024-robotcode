@@ -393,16 +393,16 @@ public enum RobotMode{
             telemetry.update();
         }
     }
-public void nextMode(){
-	this.RobotMode toNextMode;
+    public void nextMode(){
+	RobotMode toNextMode;
 	switch(this.mode){
-	    case (this.RobotMode.ESSAIFRANCK):
+	    case (ESSAIFRANCK):
 		toNextMode = this.RobotMode.ELINA;
 		break;
-	    case (this.RobotMode.ELINA):
+	    case (ELINA):
 		toNextMode = this.RobotMode.NORMAL;
 		break;
-	    case (this.RobotMode.NORMAL):
+	    case (NORMAL):
 		toNextMode = this.RobotMode.TANK;
 		break;
 	    default:
