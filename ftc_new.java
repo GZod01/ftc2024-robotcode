@@ -120,6 +120,8 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
 
         box = hardwareMap.get(DcMotorEx.class, "boxRot");
         box.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        box.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rotation.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         // box.setPositionPIDFCoefficients(5.0);
 
         // rotation positions: 20° pos initiale par rapport au sol
