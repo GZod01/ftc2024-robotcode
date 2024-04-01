@@ -25,6 +25,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 @TeleOp(name = "WeRobot: FTC2024 NEW!!! Carlike", group = "WeRobot")
 public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
+    public enum RobotMode{
+	ESSAIFRANCK, ELINA, NORMAL, TANCK;
+    }
 
     private DcMotor rm;
     private DcMotor lm;
@@ -134,18 +137,18 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
 
 	    telemetry.addData("Status", "Running");
 	    // si le bouton a du gamepad 1 est appuyé et {already_a} est faux
-	    /*if (gamepad1.a && !already_a) {
-	      if (mode == "normal") {
-	      mode = "tank";
-	      } else if (mode == "tank") {
-	      mode = "essaifranck";
-	      } else if (mode == "essaifranck") {
-	      mode = "elina";
-	      } else {
-	      mode = "elina";
-	      }
-	      already_a = true;
-	      }*/
+	    if (gamepad1.a && !already_a) {
+		if (mode == "normal") {
+		    mode = "tank";
+		} else if (mode == "tank") {
+		    mode = "essai franck";
+		} else if (mode == "essai franck") {
+		    mode = "elina";
+		} else {
+		    mode = "elina";
+		}
+		already_a = true;
+	    }
 
 	    boxRot = gamepad1.right_stick_x;
 	    // if (boxRot <= 0){
@@ -175,14 +178,15 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
 	    }
 	    double lpower = 0.0;
 	    double rpower = 0.0;
-	    /*if (mode == "normal") {
-	      double ysign = y > 0 ? 1.0 : (y < 0 ? -1.0 : 0.0);
-	      double xsign = x > 0 ? 1.0 : (x < 0 ? -1.0 : 0.0);
-	      lpower = -ysign * t + (xsign - 2 * x) * t;
-	      rpower = ysign * t + (xsign - 2 * x) * t;
-	      } else if (mode == "tank") {
-	      lpower = -y;
-	      rpower = gamepad1.right_stick_y;*/
+	    if (mode == "normal") {
+		double ysign = Double.signum(y);
+		double xsign = Double.signum(x);
+		lpower = -ysign * t + (xsign - 2 * x) * t;
+		rpower = ysign * t + (xsign - 2 * x) * t;
+	    } else if (mode == "tank") {
+		lpower = -y;
+		rpower = gamepad1.right_stick_y;
+	    }
 	    if (mode == "essaifranck") {
 		double a = (-y + x) / Math.pow(2, 1 / 2);
 		double b = (-y - x) / Math.pow(2, 1 / 2);
@@ -384,6 +388,24 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
 	    telemetry.addData("Position box",box.getCurrentPosition());
 	    telemetry.addData("box velocity",rotation.getVelocity());
 	    telemetry.update();
-	      }
 	}
     }
+    public void nextMode(){
+	this.RobotMode toNextMode;
+	switch(this.mode){
+	    case (this.RobotMode.ESSAIFRANCK):
+		toNextMode = this.RobotMode.ELINA;
+		break;
+	    case (this.RobotMode.ELINA):
+		toNextMode = this.RobotMode.NORMAL;
+		break;
+	    case (this.RobotMode.NORMAL):
+		toNextMode = this.RobotMode.TANK;
+		break;
+	    default:
+		toNextMode = this.RobotMode.ESSAIFRANCK;
+		break;
+	}
+	this.mode = toNextMode;
+    }
+}
