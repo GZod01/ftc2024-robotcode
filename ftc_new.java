@@ -208,7 +208,7 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
                     break;
 
                 case TANK:
-                    lpower = -y;
+                    lpower = y;
                     rpower = gamepad1.right_stick_y;
                     break;
 
