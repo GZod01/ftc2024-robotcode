@@ -24,7 +24,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 @TeleOp(name = "WeRobot: FTC2024 Carlike", group = "WeRobot")
-public class Werobot_FTC2024_carlike extends LinearOpMode {
+public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
 
     private DcMotor rm;
     private DcMotor lm;
@@ -64,9 +64,10 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
         boolean already_y = false;
         boolean already_up = false;
         boolean already_down = false;
+        boolean already_ps = false;
         
         boolean sinking = false;
-        
+        boolean manualMode = false;
         boolean firstLaunch = true;
 
         telemetry.addData("Status", "Initialized");
@@ -251,7 +252,14 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
             }else if (!gamepad1.dpad_down && already_down){
                 already_down = false;
             }
-            
+
+            if (gamepad1.ps && !already_ps){
+                manualMode = !manualMode;
+                already_ps = true;
+            } else if (!gamepad1.ps && already_ps){
+                already_ps = false;
+            }            
+
             // commentaires supprimés dans le robot
             // if (gamepad1.x && !already_x){
                 
@@ -308,10 +316,28 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
             
 
             // activation rotation
-            if (!gamepad1.y && already_y) {
+            if (manualMode){
+                lmelevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                rmelevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                if (gamepad1.dpad_up){
+                    rmelevator.setPower(0.3);
+                    lmelevator.setPower(0.3);
+                } else if (gamepad1.dpad_down){
+                    lmelevator.setPower(-0.3);
+                    rmelevator.setPower(-0.3);
+                } else {
+                    lmelevator.setPower(0);
+                    rmelevator.setPower(0);
+                    lmelevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                    rmelevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                }
+                
+            }
+
+            if (!gamepad1.y && already_y && !manualMode) {
                 already_y = false;
             }
-            if (gamepad1.y && !already_y){
+            if (gamepad1.y && !already_y && !manualMode){
                 already_y = true;
                 int pos = rotation.getCurrentPosition();
                 rotation.setVelocity(200);
@@ -338,6 +364,8 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
             telemetry.addData("ltrigg", t);
             telemetry.addData("t2", t2);
             telemetry.addData("rotation power",boxRot);
+            telemetry.addData("Position elevateur l", lmelevator.getCurrentPosition());
+            telemetry.addData("Position elevateur r", rmelevator.getCurrentPosition());
             telemetry.addData("Position rotation",rotation.getCurrentPosition());
             telemetry.addData("Position box",box.getCurrentPosition());
             telemetry.addData("box velocity",rotation.getVelocity());
