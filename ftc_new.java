@@ -165,9 +165,11 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
             telemetry.addData("Status", "Running");
 
             if (0.1 < gamepad1.right_stick_x) {
-                boxRot = 0.2;
+                boxRot = 0.1;
             } else if (-0.1 > gamepad1.right_stick_x) {
-                boxRot = -0.2;
+                boxRot = -0.1;
+            } else {
+                boxRot = 0;
             }
             if (gamepad1.right_trigger > 0) {
                 box.setPower(boxRot);
@@ -209,7 +211,7 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
 
                 case TANK:
                     lpower = -y;
-                    rpower = gamepad1.right_stick_y;
+                    rpower = -gamepad1.right_stick_y;
                     break;
 
                 case ESSAIFRANCK:
@@ -223,7 +225,7 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
                 case ELINA:
                     a = (-y + x) / Math.pow(2, 1 / 2);
                     b = (-y - x) / Math.pow(2, 1 / 2);
-                    vmean = (Math.abs(a) + Math.abs(b)) / 4;
+                    vmean = (Math.abs(a) + Math.abs(b)) / 2;
                     lpower = (a / vmean) * t3;
                     rpower = (b / vmean) * t3;
                     break;
@@ -234,8 +236,8 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
                 rpower /= 3;
             }
 
-            lm.setPower(lpower);
-            rm.setPower(rpower);
+            lm.setPower(lpower/1.5);
+            rm.setPower(rpower/1.5);
 
             // activation moissonneuse
             if (gamepad1.b && !already_b) {
@@ -316,6 +318,7 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
                 } else {
                     lmelevator.setPower(0);
                     rmelevator.setPower(0);
+                    rotation.setPower(0);
                     lmelevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                     rmelevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                     rotation.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
