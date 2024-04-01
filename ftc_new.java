@@ -23,7 +23,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
-@TeleOp(name = "WeRobot: FTC2024 New Carlike", group = "WeRobot")
+@TeleOp(name = "WeRobot: FTC2024 NEW!!! Carlike", group = "WeRobot")
 public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
 
     private DcMotor rm;
@@ -317,7 +317,7 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
 
             // activation rotation
             if (manualMode){
-                gamepad1.setLedColor(255,100,50,10);
+		gamepad1.setLedColor(255,0,0,10);
                 lmelevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 rmelevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 rotation.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -375,6 +375,7 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
             telemetry.addData("rpow", rpower);
             telemetry.addData("ltrigg", t);
             telemetry.addData("t2", t2);
+	    telemetry.addData("manual mode", manualMode);
             telemetry.addData("rotation power",boxRot);
             telemetry.addData("mode manuel", manualMode);
             telemetry.addData("Position elevateur l", lmelevator.getCurrentPosition());

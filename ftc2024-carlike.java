@@ -342,20 +342,6 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
                 // launch the plane
             }
 
-<<<<<<< HEAD
-			telemetry.addData("x", x);
-			telemetry.addData("y", y);
-			telemetry.addData("lpow", lpower);
-			telemetry.addData("rpow", rpower);
-			telemetry.addData("ltrigg", t);
-			telemetry.addData("t2", t2);
-			// Create an object to receive the IMU angles
-			YawPitchRollAngles robotOrientation;
-			robotOrientation = imu.getRobotYawPitchRollAngles();
-=======
-
-            
-
             telemetry.addData("x", x);
             telemetry.addData("y", y);
             telemetry.addData("lpow", lpower);
@@ -365,8 +351,6 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
             // Create an object to receive the IMU angles
             YawPitchRollAngles robotOrientation;
             robotOrientation = imu.getRobotYawPitchRollAngles();
->>>>>>> cdd50be8b9f970f1db99003d4c401bf7dafa25b6
-
             // Now use these simple methods to extract each angle
             // (Java type double) from the object you just created:
             double Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
@@ -374,14 +358,7 @@ public class Werobot_FTC2024_carlike extends LinearOpMode {
             double Roll = robotOrientation.getRoll(AngleUnit.DEGREES);
             telemetry.addData("yaw", Yaw);
 
-<<<<<<< HEAD
-			telemetry.update();
-		}
-	}
-}
-=======
             telemetry.update();
         }
     }
 }
->>>>>>> cdd50be8b9f970f1db99003d4c401bf7dafa25b6
