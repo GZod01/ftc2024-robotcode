@@ -367,7 +367,7 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
             telemetry.addData("mode manuel", manualMode);
             telemetry.addData("Position elevateur l", lmelevator.getCurrentPosition());
             telemetry.addData("Position elevateur r", rmelevator.getCurrentPosition());
-            telemetry.addData("Position rotation", rotation.getCurrentPosition());
+            telemetry.addData("Position rotation", rotation.getCurrentPosition()*360/288);
             telemetry.addData("Position box", box.getCurrentPosition());
             telemetry.addData("box velocity", rotation.getVelocity());
             telemetry.update();
