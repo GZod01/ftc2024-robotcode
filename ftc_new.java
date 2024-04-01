@@ -25,8 +25,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 @TeleOp(name = "WeRobot: FTC2024 NEW!!! Carlike", group = "WeRobot")
 public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
-public enum RobotMode{
-	ESSAIFRANCK, ELINA, NORMAL, TANK;
+    public enum RobotMode {
+        ESSAIFRANCK, ELINA, NORMAL, TANK;
     }
 
     private DcMotor rm;
@@ -36,22 +36,46 @@ public enum RobotMode{
     private DcMotorEx rmelevator;
     private DcMotorEx box;
     private DcMotorEx rotation;
-    private ElapsedTime     runtime = new ElapsedTime();
+    private ElapsedTime runtime = new ElapsedTime();
     private RobotMode mode = RobotMode.ESSAIFRANCK;
-    /*La fonction pour faire des exponentielles spécifiques
+
+    /*
+     * La fonction pour faire des exponentielles spécifiques
+     * 
      * @param double t => le nombre dont on veut faire l'exponentielle
-     * @return double une_exponentielle_très_spéciale_de_t*/
+     * 
+     * @return double une_exponentielle_très_spéciale_de_t
+     */
     private double helloexp(double t) {
         return (Math.exp(5 * t) - 1) / (Math.exp(5) - 1);
     }
 
-    //La fonction du thread principal
+    public void nextMode() {
+        RobotMode toNextMode;
+        switch (this.mode) {
+            case ESSAIFRANCK:
+                toNextMode = RobotMode.ELINA;
+                break;
+            case ELINA:
+                toNextMode = RobotMode.NORMAL;
+                break;
+            case NORMAL:
+                toNextMode = RobotMode.TANK;
+                break;
+            default:
+                toNextMode = RobotMode.ESSAIFRANCK;
+                break;
+        }
+        this.mode = toNextMode;
+    }
+
+    // La fonction du thread principal
     @Override
     public void runOpMode() throws InterruptedException {
-        
-        double boxRot;
+
+        double boxRot = 0;
         int signeBR;
-        
+
         float x;
         double y;
 
@@ -66,7 +90,7 @@ public enum RobotMode{
         boolean already_up = false;
         boolean already_down = false;
         boolean already_ps = false;
-        
+
         boolean sinking = false;
         boolean manualMode = false;
         boolean firstLaunch = true;
@@ -100,7 +124,7 @@ public enum RobotMode{
 
         // rotation positions: 20° pos initiale par rapport au sol
         // while (runtime.seconds()<0.5){
-        //     rotation.setPower(0.5);
+        // rotation.setPower(0.5);
         // }
 
         telemetry.addData("Mode", "waiting for start");
@@ -118,51 +142,54 @@ public enum RobotMode{
         rotation.setTargetPosition(0);
         rotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         while (opModeIsActive()) {
-            
+
             x = gamepad1.left_stick_x;
             y = gamepad1.left_stick_y;
-            
-            /* définition de {@link t} sur la valeur du trigger droit du gamepad 1*/
+
+            /* définition de {@link t} sur la valeur du trigger droit du gamepad 1 */
             t = gamepad1.right_trigger;
-            
-            /* définition de {@link t2} par utilisation de la fonction {@link helloexp} sur
-             * {@link t}*/
+
+            /*
+             * définition de {@link t2} par utilisation de la fonction {@link helloexp} sur
+             * {@link t}
+             */
             t2 = helloexp(t);
 
-            /* définition de {@link t3} par utilisation de la fonction {@link helloexp} sur
+            /*
+             * définition de {@link t3} par utilisation de la fonction {@link helloexp} sur
              * la norme du vecteur du joystick gauche du gamepad 1 (racine carrée de {@link
-             * x} au carré plus {@link y} au carré*/
+             * x} au carré plus {@link y} au carré
+             */
             t3 = helloexp(Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)));
-            
-            telemetry.addData("Status", "Running");            
 
-            if (0.1<gamepad1.right_stick_x){
+            telemetry.addData("Status", "Running");
+
+            if (0.1 < gamepad1.right_stick_x) {
                 boxRot = 0.2;
-            } else if (-0.1>gamepad1.right_stick_x){
+            } else if (-0.1 > gamepad1.right_stick_x) {
                 boxRot = -0.2;
             }
-            if (gamepad1.right_trigger>0){
+            if (gamepad1.right_trigger > 0) {
                 box.setPower(boxRot);
             }
             // if (boxRot <= 0){
-            //         signeBR = -1;
-            //     }
-            //     else{
-            //         signeBR=1;
-            //     }
-            
-            
+            // signeBR = -1;
+            // }
+            // else{
+            // signeBR=1;
+            // }
+
             // if (Math.abs(boxRot) < 0.1){
-            //     boxRot = 0.4*signeBR;
+            // boxRot = 0.4*signeBR;
             // }
             // else {
-            //     boxRot = 0.4*signeBR + boxRot/1.67;
-            //     if (boxRot*signeBR > 0.9){
-            //         boxRot = signeBR;
-            //     }
+            // boxRot = 0.4*signeBR + boxRot/1.67;
+            // if (boxRot*signeBR > 0.9){
+            // boxRot = signeBR;
             // }
-            
-            if(gamepad1.a && !already_a){
+            // }
+
+            if (gamepad1.a && !already_a) {
                 nextMode();
                 already_a = true;
             }
@@ -174,18 +201,18 @@ public enum RobotMode{
 
             switch (mode) {
                 case NORMAL:
-                    double ysign = Double.signum(y);
-                    double xsign = Double.signum(x);
+                    double ysign = Math.signum(y);
+                    double xsign = Math.signum(x);
                     lpower = -ysign * t + (xsign - 2 * x) * t;
                     rpower = ysign * t + (xsign - 2 * x) * t;
                     break;
-            
+
                 case TANK:
                     lpower = -y;
                     rpower = gamepad1.right_stick_y;
                     break;
-                
-                case ESSAIFRANCK :
+
+                case ESSAIFRANCK:
                     double a = (-y + x) / Math.pow(2, 1 / 2);
                     double b = (-y - x) / Math.pow(2, 1 / 2);
                     double vmean = (Math.abs(a) + Math.abs(b)) / 2;
@@ -193,16 +220,16 @@ public enum RobotMode{
                     rpower = (b / vmean) * t2;
                     break;
 
-                case ELINA : 
-                    double a = (-y + x) / Math.pow(2, 1 / 2);
-                    double b = (-y - x) / Math.pow(2, 1 / 2);
-                    double vmean = (Math.abs(a) + Math.abs(b)) / 4;
+                case ELINA:
+                    a = (-y + x) / Math.pow(2, 1 / 2);
+                    b = (-y - x) / Math.pow(2, 1 / 2);
+                    vmean = (Math.abs(a) + Math.abs(b)) / 4;
                     lpower = (a / vmean) * t3;
                     rpower = (b / vmean) * t3;
                     break;
             }
 
-            if (gamepad1.left_trigger>0.1) {
+            if (gamepad1.left_trigger > 0.1) {
                 lpower /= 3;
                 rpower /= 3;
             }
@@ -213,7 +240,7 @@ public enum RobotMode{
             // activation moissonneuse
             if (gamepad1.b && !already_b) {
                 double moissoneuseSpeed = 1.0;
-                if (gamepad1.right_bumper){
+                if (gamepad1.right_bumper) {
                     moissoneuseSpeed = -1.0;
                 }
                 already_b = !already_b;
@@ -226,9 +253,10 @@ public enum RobotMode{
             if (!gamepad1.b && already_b) {
                 already_b = false;
             }
-            
-            //activation elevateur
-            if (sinking && Math.abs(lmelevator.getCurrentPosition()-90)<=5 && Math.abs(rmelevator.getCurrentPosition()-90)<=5){
+
+            // activation elevateur
+            if (sinking && Math.abs(lmelevator.getCurrentPosition() - 90) <= 5
+                    && Math.abs(rmelevator.getCurrentPosition() - 90) <= 5) {
                 lmelevator.setVelocity(100);
                 rmelevator.setVelocity(100);
                 lmelevator.setTargetPosition(0);
@@ -236,111 +264,56 @@ public enum RobotMode{
                 lmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 rmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
-            if ((gamepad1.dpad_up && !already_up)^(gamepad1.dpad_down && !already_down)){
+            if ((gamepad1.dpad_up && !already_up) ^ (gamepad1.dpad_down && !already_down)) {
                 lmelevator.setVelocity(600);
                 rmelevator.setVelocity(600);
-                Long targetPosLong = (Long) Math.round(288*3.4);
+                Long targetPosLong = (Long) Math.round(288 * 3.4);
                 int targetPos = targetPosLong.intValue();
-                if (gamepad1.dpad_down){
+                if (gamepad1.dpad_down) {
                     targetPos = 90;
                     already_down = true;
                     sinking = true;
-                }else{
+                } else {
                     already_up = true;
                     sinking = false;
                 }
                 lmelevator.setTargetPosition(targetPos);
-                rmelevator.setTargetPosition(targetPos);    
+                rmelevator.setTargetPosition(targetPos);
                 lmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 rmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                
-            }else if (!gamepad1.dpad_up && already_up){
+
+            } else if (!gamepad1.dpad_up && already_up) {
                 already_up = false;
-            }else if (!gamepad1.dpad_down && already_down){
+            } else if (!gamepad1.dpad_down && already_down) {
                 already_down = false;
             }
 
-            if (gamepad1.ps && !already_ps){
+            if (gamepad1.ps && !already_ps) {
                 manualMode = !manualMode;
                 already_ps = true;
-            } else if (!gamepad1.ps && already_ps){
+            } else if (!gamepad1.ps && already_ps) {
                 already_ps = false;
-            }            
-
-            // commentaires supprimés dans le robot
-            // if (gamepad1.x && !already_x){
-                
-            //     int targetPos = 0;
-            //     if(gamepad1.right_bumper){
-            //         targetPos = -97;
-            //     }
-                
-            //     // while (Math.abs(box.getCurrentPosition()-targetPos) > 30)
-            //     // {
-            //     //     box.setVelocity(100);
-            //     //     box.setTargetPosition(targetPos);
-            //     //     box.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            //     // }
-                
-                
-            
-            //     box.setVelocity(50);
-            //     box.setTargetPosition(targetPos);
-            //     box.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            
-            //     already_x = !already_x;
-            // } else if(!gamepad1.x && already_x){
-            //     already_x = false;
-            // }
-            
-            // if (Math.abs(box.getCurrentPosition() - box.getTargetPosition()) < 20) {
-            //     box.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
-            //     box.setPower(-0.2);
-            //     telemetry.addData("ModeChanged","without encoders");
-            // }
-                
-            
-            
-            // if (gamepad1.y && already_y){
-            //     rotation.setVelocity(200);
-            //     // int targetPos = 0;
-            //     // if (gamepad1.right_bumper){
-            //     //     targetPos = 0;
-            //     // }else if (gamepad1.left_bumper){
-            //     //     targetPos = 0;
-            //     // }
-            //     // rotation.setTargetPosition(targetPos);
-            //     // rotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                
-            //     int pos = rotation.getCurrentPosition();
-            //     if (gamepad1.right_bumper){
-            //         rotation.setTargetPosition(pos + 100);
-            //     }else if (gamepad1.left_bumper){
-            //         rotation.setTargetPosition(pos - 100);
-            //     }
-            //     rotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            // }
-            
+            }
 
             // activation rotation
-            if (manualMode){
-		        gamepad1.setLedColor(255,0,0,10);
+            if (manualMode) {
+                gamepad1.setLedColor(255, 0, 0, 10);
                 lmelevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 rmelevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 rotation.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                if (gamepad1.dpad_up){
+                if (gamepad1.dpad_up) {
                     rmelevator.setPower(0.3);
                     lmelevator.setPower(0.3);
-                } else if (gamepad1.dpad_down){
+                } else if (gamepad1.dpad_down) {
                     lmelevator.setPower(-0.3);
                     rmelevator.setPower(-0.3);
-                } else if (gamepad1.y){
+                } else if (gamepad1.y) {
                     double power = -0.3;
-                    if (gamepad1.right_bumper){
+                    if (gamepad1.right_bumper) {
                         power = -power;
                     }
                     rotation.setPower(power);
-                }  else {
+                } else {
                     lmelevator.setPower(0);
                     rmelevator.setPower(0);
                     lmelevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -348,31 +321,30 @@ public enum RobotMode{
                     rotation.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 }
 
-            }
-        else{
-        gamepad1.setLedColor(0,0,255,10);
+            } else {
+                gamepad1.setLedColor(0, 0, 255, 10);
             }
 
             if (!gamepad1.y && already_y && !manualMode) {
                 already_y = false;
             }
-            if (gamepad1.y && !already_y && !manualMode){
+            if (gamepad1.y && !already_y && !manualMode) {
                 already_y = true;
                 int pos = rotation.getCurrentPosition();
                 rotation.setVelocity(200);
-                if (gamepad1.right_bumper){
+                if (gamepad1.right_bumper) {
                     // rotation.setTargetPosition(pos - 25);
-                    rotation.setTargetPosition(-100); // vertical si pos origine = 0    
-                } else if (gamepad1.left_bumper){
+                    rotation.setTargetPosition(-100); // vertical si pos origine = 0
+                } else if (gamepad1.left_bumper) {
                     // rotation.setTargetPosition(pos + 25);
-                    rotation.setTargetPosition(1000); //position basse
+                    rotation.setTargetPosition(1000); // position basse
                 } else {
                     rotation.setTargetPosition(0);
                 }
                 rotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
-            
-            if (gamepad1.right_bumper && gamepad1.left_bumper){
+
+            if (gamepad1.right_bumper && gamepad1.left_bumper) {
                 // launch the plane
             }
 
@@ -383,32 +355,15 @@ public enum RobotMode{
             telemetry.addData("rpow", rpower);
             telemetry.addData("ltrigg", t);
             telemetry.addData("t2", t2);
-            telemetry.addData("rotation power",boxRot);
+            telemetry.addData("rotation power", boxRot);
             telemetry.addData("mode manuel", manualMode);
             telemetry.addData("Position elevateur l", lmelevator.getCurrentPosition());
             telemetry.addData("Position elevateur r", rmelevator.getCurrentPosition());
-            telemetry.addData("Position rotation",rotation.getCurrentPosition());
-            telemetry.addData("Position box",box.getCurrentPosition());
-            telemetry.addData("box velocity",rotation.getVelocity());
+            telemetry.addData("Position rotation", rotation.getCurrentPosition());
+            telemetry.addData("Position box", box.getCurrentPosition());
+            telemetry.addData("box velocity", rotation.getVelocity());
             telemetry.update();
         }
     }
-    public void nextMode(){
-	RobotMode toNextMode;
-	switch(this.mode){
-	    case (ESSAIFRANCK):
-		toNextMode = this.RobotMode.ELINA;
-		break;
-	    case (ELINA):
-		toNextMode = this.RobotMode.NORMAL;
-		break;
-	    case (NORMAL):
-		toNextMode = this.RobotMode.TANK;
-		break;
-	    default:
-		toNextMode = this.RobotMode.ESSAIFRANCK;
-		break;
-	}
-	this.mode = toNextMode;
-    }
+
 }
