@@ -317,26 +317,34 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
 
             // activation rotation
             if (manualMode){
-		gamepad1.setLedColor(255,100,50,10);
+                gamepad1.setLedColor(255,100,50,10);
                 lmelevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 rmelevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                rotation.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 if (gamepad1.dpad_up){
                     rmelevator.setPower(0.3);
                     lmelevator.setPower(0.3);
                 } else if (gamepad1.dpad_down){
                     lmelevator.setPower(-0.3);
                     rmelevator.setPower(-0.3);
-                } else {
+                } else if (gamepad1.y){
+                    double power = 0.3;
+                    if (gamepad1.right_bumper){
+                        power = -power;
+                    }
+                    rotation.setPower(power);
+                }  else {
                     lmelevator.setPower(0);
                     rmelevator.setPower(0);
                     lmelevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                     rmelevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                    rotation.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 }
-                
+
             }
 	    else{
 		gamepad1.setLedColor(0,0,255,10);
-	    }
+            }
 
             if (!gamepad1.y && already_y && !manualMode) {
                 already_y = false;
