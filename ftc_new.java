@@ -210,7 +210,7 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
                 case NORMAL:
                     double ysign = Math.signum(y);
                     double xsign = Math.signum(x);
-                    lpower = -ysign * t + (xsign - 2 * x) * t;
+                    lpower = ysign * t + (-xsign - 2 * x) * t;
                     rpower = ysign * t + (xsign - 2 * x) * t;
                     break;
 
@@ -221,11 +221,13 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
                     break;
 
                 case ESSAIFRANCK:
-                    a = (-y + x) / 2;//Math.pow(2, 1 / 2);
-                    b = (-y - x) / 2;//Math.pow(2, 1 / 2);
-                    vmean = (Math.abs(a) + Math.abs(b)) / 2;
-                    lpower = (a / vmean) * t2;
-                    rpower = (b / vmean) * t2;
+                    //a = (Math.signum(y)*Math.abs(Math.signum(x))) / 2;//Math.pow(2, 1 / 2);
+                    //b = (-Math.signum(y)*(1-Math.abs(Math.signum(x)))) / 2;//Math.pow(2, 1 / 2);
+                    //vmean = (Math.abs(a) + Math.abs(b)) / 2;
+                    lpower = (1 + x)/2; //(a / vmean) * t2;
+                    rpower = 1-lpower;//(b / vmean) * t2;
+		    lpower*=t2;
+		    rpower*=t2;
                     break;
 
                 case ELINA:
