@@ -222,8 +222,8 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
                     a = (-y + x) / 2;//Math.pow(2, 1 / 2);
                     b = (-y - x) / 2;//Math.pow(2, 1 / 2);
                     vmean = (Math.abs(a) + Math.abs(b)) / 2;
-                    lpower = a*t2;//(a / vmean) * t2;
-                    rpower = a*t2;//(b / vmean) * t2;
+                    lpower = (a / vmean) * t2;
+                    rpower = (b / vmean) * t2;
                     break;
 
                 case ELINA:
