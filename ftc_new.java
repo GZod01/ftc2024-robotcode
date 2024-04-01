@@ -23,7 +23,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
-@TeleOp(name = "WeRobot: FTC2024 NEW!!! Carlike", group = "WeRobot")
+@TeleOp(name = "WeRobot: FTC2024 NEW! Carlike", group = "WeRobot")
 public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
     public enum RobotMode {
         ESSAIFRANCK, ELINA, NORMAL, TANK;
@@ -198,8 +198,11 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
             }
             double lpower = 0.0;
             double rpower = 0.0;
-
+	    double vmean;
+	    double a;
+	    double b;
             switch (mode) {
+		
                 case NORMAL:
                     double ysign = Math.signum(y);
                     double xsign = Math.signum(x);
@@ -207,17 +210,18 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
                     rpower = ysign * t + (xsign - 2 * x) * t;
                     break;
 
+
                 case TANK:
-                    lpower = y;
-                    rpower = gamepad1.right_stick_y;
+                    lpower = -y;
+                    rpower = -gamepad1.right_stick_y;
                     break;
 
                 case ESSAIFRANCK:
-                    double a = (-y + x) / Math.pow(2, 1 / 2);
-                    double b = (-y - x) / Math.pow(2, 1 / 2);
-                    double vmean = (Math.abs(a) + Math.abs(b)) / 2;
-                    lpower = (a / vmean) * t2;
-                    rpower = (b / vmean) * t2;
+                    a = (-y + x) / 2;//Math.pow(2, 1 / 2);
+                    b = (-y - x) / 2;//Math.pow(2, 1 / 2);
+                    vmean = (Math.abs(a) + Math.abs(b)) / 2;
+                    lpower = a*t2;//(a / vmean) * t2;
+                    rpower = a*t2;//(b / vmean) * t2;
                     break;
 
                 case ELINA:
@@ -227,6 +231,7 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
                     lpower = (a / vmean) * t3;
                     rpower = (b / vmean) * t3;
                     break;
+
             }
 
             if (gamepad1.left_trigger > 0.1) {
