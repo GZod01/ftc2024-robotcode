@@ -29,8 +29,8 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
         ESSAIFRANCK, ELINA, NORMAL, TANK;
     }
 
-    private DcMotor rm;
-    private DcMotor lm;
+    private DcMotorEx rm;
+    private DcMotorEx lm;
     private DcMotor moissoneuse;
     private DcMotorEx lmelevator;
     private DcMotorEx rmelevator;
@@ -41,9 +41,9 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
 
     /*
      * La fonction pour faire des exponentielles spécifiques
-     * 
+     *
      * @param double t => le nombre dont on veut faire l'exponentielle
-     * 
+     *
      * @return double une_exponentielle_très_spéciale_de_t
      */
     private double helloexp(double t) {
@@ -68,7 +68,9 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
         }
         this.mode = toNextMode;
     }
-
+    public boolean isBetween(double elem, double mini, double maxi){
+        return Math.abs(elem - (((maxi-mini)/2)+mini))<=(maxi-mini)/2;
+    }
     // La fonction du thread principal
     @Override
     public void runOpMode() throws InterruptedException {
@@ -90,17 +92,29 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
         boolean already_up = false;
         boolean already_down = false;
         boolean already_ps = false;
+        
+        boolean already_paddown = false;
+        boolean already_padup = false;
+        boolean already_padright = false;
+        boolean already_padleft = false;
+        
 
         boolean sinking = false;
         boolean manualMode = false;
         boolean firstLaunch = true;
 
         telemetry.addData("Status", "Initialized");
+        telemetry.addData("Version", "5.123");
 
-        lm = hardwareMap.get(DcMotor.class, "blm");
+        lm = hardwareMap.get(DcMotorEx.class, "blm");
 
-        rm = hardwareMap.get(DcMotor.class, "brm");
+        rm = hardwareMap.get(DcMotorEx.class, "brm");
         rm.setDirection(DcMotor.Direction.REVERSE);
+        
+        lm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        rm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         moissoneuse = hardwareMap.get(DcMotor.class, "moissonneuse");
         moissoneuse.setDirection(DcMotor.Direction.REVERSE);
@@ -165,34 +179,10 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
             t3 = helloexp(Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)));
 
             telemetry.addData("Status", "Running");
+            
 
-            if (0.1 < gamepad1.right_stick_x) {
-                boxRot = 0.1;
-            } else if (-0.1 > gamepad1.right_stick_x) {
-                boxRot = -0.1;
-            } else {
-                boxRot = 0;
-            }
-            if (gamepad1.right_trigger > 0) {
-                box.setPower(boxRot);
-            }
-            // if (boxRot <= 0){
-            // signeBR = -1;
-            // }
-            // else{
-            // signeBR=1;
-            // }
 
-            // if (Math.abs(boxRot) < 0.1){
-            // boxRot = 0.4*signeBR;
-            // }
-            // else {
-            // boxRot = 0.4*signeBR + boxRot/1.67;
-            // if (boxRot*signeBR > 0.9){
-            // boxRot = signeBR;
-            // }
-            // }
-
+            // Choix mode conduite / actif en manuel et auto
             if (gamepad1.a && !already_a) {
                 nextMode();
                 already_a = true;
@@ -202,11 +192,11 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
             }
             double lpower = 0.0;
             double rpower = 0.0;
-	    double vmean;
-	    double a;
-	    double b;
+            double vmean;
+            double a;
+            double b;
             switch (mode) {
-		
+
                 case NORMAL:
                     double ysign = Math.signum(y);
                     double xsign = Math.signum(x);
@@ -221,13 +211,77 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
                     break;
 
                 case ESSAIFRANCK:
-                    //a = (Math.signum(y)*Math.abs(Math.signum(x))) / 2;//Math.pow(2, 1 / 2);
-                    //b = (-Math.signum(y)*(1-Math.abs(Math.signum(x)))) / 2;//Math.pow(2, 1 / 2);
-                    //vmean = (Math.abs(a) + Math.abs(b)) / 2;
-                    lpower = (1 + x)/2; //(a / vmean) * t2;
-                    rpower = 1-lpower;//(b / vmean) * t2;
-		    lpower*=t2;
-		    rpower*=t2;
+                    // Code ci-dessous OK
+                    // lpower = (1 + x); //(a / vmean) * t2;
+                    // rpower = 2-lpower;//(b / vmean) * t2;
+                    // lpower*=t2*((Math.signum(y)==0)?1:-Math.signum(y)); // sigNum(0)
+                    // rpower*=t2*((Math.signum(y)==0)?1:-Math.signum(y));
+                    // Fin code OK
+                    
+                    int ltargetPos, rtargetPos;
+                    ltargetPos = rtargetPos = 0;
+                    
+                    int lmpos = lm.getCurrentPosition();
+                    int rmpos = rm.getCurrentPosition();
+                    int step = 100;
+                    // double rapp = step/theta;
+                    double signe = Math.signum(-y);
+                    signe = (signe == 0)?1.0:signe;
+                    if (Math.abs(x)<=0.1){
+                        ltargetPos = rtargetPos = 100;
+                    }else if (isBetween(x,0.1,0.9)){
+                        rtargetPos = step;
+                        ltargetPos = 2*step;
+                    }else if (x>=0.9){
+                        ltargetPos = step;
+                        rtargetPos = -step;
+                    }else if (x<=-0.9){
+                        ltargetPos = -step;
+                        rtargetPos = step;
+                    }else if (isBetween(x, -0.9,-0.1)){
+                        rtargetPos = 2*step;
+                        ltargetPos = step;
+                    }
+                    ltargetPos*=signe;
+                    rtargetPos*=signe;
+                            
+                    // if (x>0.1){
+                    //     theta = Math.abs(Math.PI/2 - Math.atan2(-y,x));
+                    //     theta = (theta > Math.PI/2)?(Math.PI - theta):theta;
+                    //     ltargetPos = (int) (Math.floor(theta*37.0 + step)*signe);
+                    //     rtargetPos = (int) (Math.floor(step)*signe);
+                    // }
+                    // else if (x < -0.1){
+                    //     theta = Math.abs(Math.abs(Math.atan2(-y,x)) - Math.PI/2);
+                    //     rtargetPos = (int) (Math.floor(theta*37.0 + step)*signe);
+                    //     ltargetPos = (int) (Math.floor(step)*signe);
+                    // }
+                    // else {
+                    //     rtargetPos = step*((int) Math.signum(-y));
+                    //     ltargetPos = step*((int) Math.signum(-y));
+                    // }
+                    
+                    telemetry.addData("ltargetPos avant cut",ltargetPos);
+                    telemetry.addData("rtargetPos avant cut",rtargetPos);
+                    
+                    // ltargetPos = ((Math.abs(ltargetPos)> step)?(int) Math.signum(ltargetPos)*(step + Math.abs(ltargetPos)%step ):ltargetPos);
+                    // rtargetPos = ((Math.abs(rtargetPos)> step)?(int) Math.signum(rtargetPos)*(step + Math.abs(rtargetPos)%step):rtargetPos);
+                    
+                    lm.setTargetPosition(lmpos + ltargetPos);
+                    rm.setTargetPosition(rmpos + rtargetPos);
+                    lm.setVelocity(2800.0*t2);
+                    rm.setVelocity(2800.0*t2);
+                    
+                    
+                    // telemetry.addData("rapp",rapp);
+                    telemetry.addData("ltargetPos",ltargetPos);
+                    telemetry.addData("rtargetPos",rtargetPos);
+                    
+                    lm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    rm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    
+                    
+                    
                     break;
 
                 case ELINA:
@@ -245,10 +299,12 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
                 rpower /= 3;
             }
 
-            lm.setPower(lpower/1.5);
-            rm.setPower(rpower/1.5);
+            // CODE OK
+            // lm.setPower(lpower/1.5);
+            // rm.setPower(rpower/1.5);
+            // Fin code OK
 
-            // activation moissonneuse
+            // activation moissonneuse -- actif en manuel et auto
             if (gamepad1.b && !already_b) {
                 double moissoneuseSpeed = 1.0;
                 if (gamepad1.right_bumper) {
@@ -308,16 +364,35 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
 
             // activation rotation
             if (manualMode) {
-                gamepad1.setLedColor(255, 0, 0, 10);
-                lmelevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                rmelevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                gamepad1.setLedColor(1.0, 0.0, 0.0,255);
+                // lmelevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                // rmelevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                
                 rotation.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                box.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                // Elevator manual mode
                 if (gamepad1.dpad_up) {
-                    rmelevator.setPower(0.3);
-                    lmelevator.setPower(0.3);
+                    // rmelevator.setPower(0.3);
+                    // lmelevator.setPower(0.3);
+                    lmelevator.setVelocity(400);
+                    rmelevator.setVelocity(400);
+                    int lpos = rmelevator.getCurrentPosition();
+                    int rpos = lmelevator.getCurrentPosition();
+                    lmelevator.setTargetPosition(lpos + 15);
+                    rmelevator.setTargetPosition(rpos + 15);
+                    lmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    rmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 } else if (gamepad1.dpad_down) {
-                    lmelevator.setPower(-0.3);
-                    rmelevator.setPower(-0.3);
+                    // lmelevator.setPower(-0.3);
+                    // rmelevator.setPower(-0.3);
+                    lmelevator.setVelocity(400);
+                    rmelevator.setVelocity(400);
+                    int lpos = rmelevator.getCurrentPosition();
+                    int rpos = lmelevator.getCurrentPosition();
+                    lmelevator.setTargetPosition(lpos - 15);
+                    rmelevator.setTargetPosition(rpos - 15);
+                    lmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    rmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 } else if (gamepad1.y) {
                     double power = -0.3;
                     if (gamepad1.right_bumper) {
@@ -325,35 +400,131 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
                     }
                     rotation.setPower(power);
                 } else {
-                    lmelevator.setPower(0);
-                    rmelevator.setPower(0);
+                    // lmelevator.setPower(0);
+                    // rmelevator.setPower(0);
                     rotation.setPower(0);
-                    lmelevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                    rmelevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                    // lmelevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                    // rmelevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                     rotation.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                }
+                // Box manual mode
+                if (gamepad1.dpad_left) {
+                    box.setPower(0.3);
+                    box.setPower(0.3);
+                } else if (gamepad1.dpad_right) {
+                    box.setPower(-0.3);
+                    box.setPower(-0.3);
+                } 
+                else {
+                    box.setPower(0);
+                    box.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                    
+                }
+                // Accrochage final
+                if (gamepad1.x){
+                    // lmelevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                    // rmelevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                    lmelevator.setVelocity(600);
+                    rmelevator.setVelocity(600);
+                    lmelevator.setTargetPosition(40);
+                    rmelevator.setTargetPosition(40);
+                    lmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    rmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 }
 
             } else {
-                gamepad1.setLedColor(0, 0, 255, 10);
-            }
-
-            if (!gamepad1.y && already_y && !manualMode) {
-                already_y = false;
-            }
-            if (gamepad1.y && !already_y && !manualMode) {
-                already_y = true;
-                int pos = rotation.getCurrentPosition();
-                rotation.setVelocity(200);
-                if (gamepad1.right_bumper) {
-                    // rotation.setTargetPosition(pos - 25);
-                    rotation.setTargetPosition(-100); // vertical si pos origine = 0
-                } else if (gamepad1.left_bumper) {
-                    // rotation.setTargetPosition(pos + 25);
-                    rotation.setTargetPosition(1000); // position basse
-                } else {
-                    rotation.setTargetPosition(0);
+                gamepad1.setLedColor(0.0, 0.0, 0.0,10);
+                
+                if (!gamepad1.dpad_right && already_padright) {
+                    already_padright = false;
                 }
-                rotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                if (gamepad1.dpad_right && !already_padright) {
+                    already_padright = true;
+                    // POSITION INITIALE
+                    rotation.setVelocity(600);
+                    rotation.setTargetPosition(0);
+                    
+                    lmelevator.setVelocity(600);
+                    lmelevator.setTargetPosition(0);
+                    rmelevator.setVelocity(600);
+                    rmelevator.setTargetPosition(0);
+                    
+                    rotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    lmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    rmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                }
+                
+                if (!gamepad1.dpad_left && already_padleft) {
+                    already_padleft = false;
+                }
+                if (gamepad1.dpad_left && !already_padleft) {
+                    already_padleft = true;
+                    // POSITION ROULAGE  / Rammase Pixel dans boite
+                    rotation.setVelocity(600);
+                    rotation.setTargetPosition(-50);
+                    
+                    lmelevator.setVelocity(600);
+                    lmelevator.setTargetPosition(150);
+                    rmelevator.setVelocity(600);
+                    rmelevator.setTargetPosition(150);
+                    
+                    rotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    lmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    rmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                }
+            
+
+                if (!gamepad1.dpad_up && already_padup) {
+                    already_y = false;
+                }
+                if (gamepad1.dpad_up && !already_padup) {
+                    already_padup = true;
+                    // POSITION CHASSE-NEIGE
+                    rotation.setVelocity(600);
+                    rotation.setTargetPosition(110);
+                    
+                    lmelevator.setVelocity(600);
+                    lmelevator.setTargetPosition(555);
+                    rmelevator.setVelocity(600);
+                    rmelevator.setTargetPosition(555);
+                    
+                    rotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    lmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    rmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    
+                    
+                    // int pos = rotation.getCurrentPosition();
+                    // rotation.setVelocity(200);
+                    // if (gamepad1.right_bumper) {
+                    //     // rotation.setTargetPosition(pos - 25);
+                    //     rotation.setTargetPosition(-100); // vertical si pos origine = 0
+                    // } else if (gamepad1.left_bumper) {
+                    //     // rotation.setTargetPosition(pos + 25);
+                    //     rotation.setTargetPosition(1000); // position basse
+                    // } else {
+                    //     rotation.setTargetPosition(0);
+                    // }
+                    // rotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                }
+                
+                if (!gamepad1.dpad_down && already_paddown) {
+                    already_a = false;
+                }
+                if (gamepad1.dpad_down && !already_paddown) {
+                    already_a = true;
+                    // POSITION BASSE
+                    rotation.setVelocity(600);
+                    rotation.setTargetPosition(800);
+                    
+                    lmelevator.setVelocity(600);
+                    lmelevator.setTargetPosition(0);
+                    rmelevator.setVelocity(600);
+                    rmelevator.setTargetPosition(0);
+                    
+                    rotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    lmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    rmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                }
             }
 
             if (gamepad1.right_bumper && gamepad1.left_bumper) {
