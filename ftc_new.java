@@ -370,6 +370,7 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
                 
                 rotation.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 box.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                telemetry.addData("mode","MANUEL");
                 // Elevator manual mode
                 if (gamepad1.dpad_up) {
                     // rmelevator.setPower(0.3);
@@ -406,6 +407,7 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
                     // lmelevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                     // rmelevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                     rotation.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                    
                 }
                 // Box manual mode
                 if (gamepad1.dpad_left) {
@@ -434,6 +436,7 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
 
             } else {
                 gamepad1.setLedColor(0.0, 0.0, 0.0,10);
+                telemetry.addData("mode","AUTOMATIQUE");
                 
                 if (!gamepad1.dpad_right && already_padright) {
                     already_padright = false;
@@ -539,7 +542,6 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
             telemetry.addData("ltrigg", t);
             telemetry.addData("t2", t2);
             telemetry.addData("rotation power", boxRot);
-            telemetry.addData("mode manuel", manualMode);
             telemetry.addData("Position elevateur l", lmelevator.getCurrentPosition());
             telemetry.addData("Position elevateur r", rmelevator.getCurrentPosition());
             telemetry.addData("Position rotation", rotation.getCurrentPosition());
