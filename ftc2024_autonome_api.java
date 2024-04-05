@@ -24,9 +24,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class Ftc2024_autonome_api extends LinearOpMode {
     public enum AutoMode{
-		B2D,B4D,B2N,B4N,R2D,R4D,R2N,R4N
-	}
-	public AutoMode autonomous_mode;
+        B2D,B4D,B2N,B4N,R2D,R4D,R2N,R4N
+    }
+    public AutoMode autonomous_mode;
     public DcMotor lm;
     public DcMotor rm;
     public DcMotorEx lmelevator;
@@ -54,7 +54,7 @@ public class Ftc2024_autonome_api extends LinearOpMode {
         imu.resetYaw();
         YawPitchRollAngles robotOrientation;
         FTC2024WeRobotControl robot = new FTC2024WeRobotControl(this);
-        autonomous_mode = "b4d";
+        autonomous_mode = AutoMode.B4D;
 
         telemetry.addData("wait for start", "");
         telemetry.update();
@@ -89,7 +89,7 @@ public class Ftc2024_autonome_api extends LinearOpMode {
                     robot.backward(1);
                     robot.harvest(0);
                     break;
-                case ("b2d"):
+                case B2D:
                     robot.boxElv();
                     robot.forward(0.5);
                     robot.rotate((-90));
@@ -98,7 +98,7 @@ public class Ftc2024_autonome_api extends LinearOpMode {
                     robot.backward(1);
                     robot.harvest(0);
                     break;
-                case ("r4d"):
+                case R4D:
                     robot.boxElv();
                     robot.forward(0.5);
                     robot.rotate(90);
@@ -107,7 +107,7 @@ public class Ftc2024_autonome_api extends LinearOpMode {
                     robot.backward(1);
                     robot.harvest(0);
                     break;
-                case ("r2d"):
+                case R2D:
                     robot.boxElv();
                     robot.forward(0.5);
                     robot.rotate(90);
@@ -116,7 +116,7 @@ public class Ftc2024_autonome_api extends LinearOpMode {
                     robot.backward(1);
                     robot.harvest(0);
                     break;
-                case ("b4n"):
+                case B4N:
                     robot.boxElv();
                     robot.forward(1.5);
                     robot.rotate(90);
@@ -133,7 +133,7 @@ public class Ftc2024_autonome_api extends LinearOpMode {
                     robot.backward(1);
                     robot.harvest(0);
                     break;
-                case ("b2n"):
+                case B2N:
                     robot.boxElv();
                     robot.forward(1.5);
                     robot.rotate(90);
@@ -150,7 +150,7 @@ public class Ftc2024_autonome_api extends LinearOpMode {
                     robot.backward(1);
                     robot.harvest(0);
                     break;
-                case ("r4n"):
+                case R4N:
                     robot.boxElv();
                     robot.forward(1.5);
                     robot.rotate(-90);
@@ -167,7 +167,7 @@ public class Ftc2024_autonome_api extends LinearOpMode {
                     robot.backward(1);
                     robot.harvest(0);
                     break;
-                case ("r2n"):
+                case R2N:
                     robot.boxElv();
                     robot.forward(1.5);
                     robot.rotate(-90);
