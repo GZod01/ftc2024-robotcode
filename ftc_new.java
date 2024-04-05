@@ -184,7 +184,7 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
             
 
 			if (gamepad1.right_bumper && gamepad1.left_bumper && gamepad1.a){
-				avion.setPosition(1);
+				avion.setPosition(0);
 				continue;
 			}
             // Choix mode conduite / actif en manuel et auto
@@ -233,7 +233,8 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
                     // double rapp = step/theta;
                     double signe = Math.signum(-y);
                     signe = (signe == 0)?1.0:signe;
-                    if (Math.abs(x)<=0.1){
+					if(Math.abs(x)<=0.1 && Math.abs(y)<=0.1) ltargetpos = rtargetpos = 0;
+                    else if (Math.abs(x)<=0.1){
                         ltargetPos = rtargetPos = 100;
                     }else if (isBetween(x,0.1,0.9)){
                         rtargetPos = step;
@@ -536,9 +537,7 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
                 }
             }
 
-            if (gamepad1.right_bumper && gamepad1.left_bumper) {
-                avion.setPosition(110);
-            }
+     
 
             telemetry.addData("x", x);
             telemetry.addData("y", y);
