@@ -22,7 +22,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @Autonomous
 
 public class Ftc2024_autonome_api extends LinearOpMode {
-	public String autonomous_mode;
+	public enum AutoMode{
+		B2D,B4D,B2N,B4N,R2D,R4D,R2N,R4N
+	}
+	public AutoMode autonomous_mode;
 	public DcMotor lm;
 	public DcMotor rm;
 	public DcMotor harvestmotor;
@@ -77,7 +80,7 @@ public class Ftc2024_autonome_api extends LinearOpMode {
 					robot.backward(1);
 					robot.harvest(0);
 					break;
-				case ("b2d"):
+				case B2D:
 					robot.forward(0.5);
 					robot.rotate((-90));
 					robot.forward(2.5);
@@ -85,7 +88,7 @@ public class Ftc2024_autonome_api extends LinearOpMode {
 					robot.backward(1);
 					robot.harvest(0);
 					break;
-				case ("r4d"):
+				case R4D:
 					robot.forward(0.5);
 					robot.rotate(90);
 					robot.forward(1.5);
@@ -93,7 +96,7 @@ public class Ftc2024_autonome_api extends LinearOpMode {
 					robot.backward(1);
 					robot.harvest(0);
 					break;
-				case ("r2d"):
+				case R2D:
 					robot.forward(0.5);
 					robot.rotate(90);
 					robot.forward(2.5);
@@ -101,7 +104,7 @@ public class Ftc2024_autonome_api extends LinearOpMode {
 					robot.backward(1);
 					robot.harvest(0);
 					break;
-				case ("b4n"):
+				case B4N:
 					robot.forward(1.5);
 					robot.rotate(90);
 					robot.harvest();
@@ -117,7 +120,7 @@ public class Ftc2024_autonome_api extends LinearOpMode {
 					robot.backward(1);
 					robot.harvest(0);
 					break;
-				case ("b2n"):
+				case B2N:
 					robot.forward(1.5);
 					robot.rotate(90);
 					robot.harvest();
@@ -133,7 +136,7 @@ public class Ftc2024_autonome_api extends LinearOpMode {
 					robot.backward(1);
 					robot.harvest(0);
 					break;
-				case ("r4n"):
+				case R4N:
 					robot.forward(1.5);
 					robot.rotate(-90);
 					robot.harvest();
@@ -149,7 +152,7 @@ public class Ftc2024_autonome_api extends LinearOpMode {
 					robot.backward(1);
 					robot.harvest(0);
 					break;
-				case ("r2n"):
+				case R2N:
 					robot.forward(1.5);
 					robot.rotate(-90);
 					robot.harvest();
