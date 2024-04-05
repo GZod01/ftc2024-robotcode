@@ -38,18 +38,17 @@ public class FTC2024WeRobotControl {
      * the width size of the tiles on the ground in metres
      */
     private final double ground_tiles_width = 61.0e-2; // metres
-						       //
+                                                       //
     private final double defaultspeed = 0.6;
-    private final double defaultanglespeed = 0.4;
-    
+
     private ElapsedTime timer;
-     
+
     private YawPitchRollAngles robotOrientation;
-    
+
     /*
      * construct the FTC2024WeRobotControl class, the WeRobot Robot Controller Class
      * for the FTC2024
-     * 
+     *
      * @param Parent = the parent class, use the "this" keyword if you are
      * constructing the class directly in
      */
@@ -61,10 +60,20 @@ public class FTC2024WeRobotControl {
 
     /*
      * return a metre/sec speed
-     * 
+     *
      * @param motor_speed = (optional) double between 0 and 1; motor power; default
      * to 1
      */
+    
+    public void boxElv(){
+        Parent.lmelevator.setVelocity(600);
+        Parent.rmelevator.setVelocity(600);
+        Parent.lmelevator.setTargetPosition(90);
+        Parent.rmelevator.setTargetPosition(90);
+        Parent.lmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        Parent.rmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+        
     public double getSpeedFromMotorSpeed(double motor_speed) {
         double speed_tour_par_minutes = this.tour_par_minutes * motor_speed;
         double speed = (speed_tour_par_minutes / 60) * this.wheel_perimeter;
@@ -73,9 +82,9 @@ public class FTC2024WeRobotControl {
 
     /*
      * return the needed time for a distance
-     * 
+     *
      * @param dist = distance in metre
-     * 
+     *
      * @param motor_speed = (optional) double between 0 and 1; motor power; default
      * to 1
      */
@@ -86,10 +95,10 @@ public class FTC2024WeRobotControl {
 
     /*
      * go forward
-     * 
+     *
      * @param n_tiles = the number of tiles (a double because it can be 0.5 or 1.5
      * etc.)
-     * 
+     *
      * @param motor_speed = (optional) double between 0 and 1; motor power; default
      * to 1
      */
@@ -110,24 +119,24 @@ public class FTC2024WeRobotControl {
 
     /*
      * go backward
-     * 
+     *
      * @param n_tiles = the number of tiles (a double because it can be 0.5 or 1.5
      * etc.)
-     * 
+     *
      * @param motor_speed = (optional) double between 0 and 1; motor power; default
      * to 1
      */
     public void backward(double n_tiles, double motor_speed) {
         forward(n_tiles, -motor_speed);
     }
-    
+
     public void backward(double n_tiles){
         this.backward(n_tiles,this.defaultspeed);
     }
 
     /*
      * harvest
-     * 
+     *
      * @param motor_speed = (optional) double between 0 and 1; motor power; default
      * to 1
      */
@@ -135,14 +144,14 @@ public class FTC2024WeRobotControl {
         Parent.harvestmotor.setPower(motor_speed);
     }
     public void harvest() {
-	this.harvest(1.0);
+        this.harvest(1.0);
     }
 
     /*
      * rotate
-     * 
+     *
      * @param angle = the angle to rotate (in degrees)
-     * 
+     *
      * @param motor_speed = (optional) double between 0 and 1; motor power; default
      * to 1
      */
@@ -154,15 +163,15 @@ public class FTC2024WeRobotControl {
         double left_multiplier = -((double) Math.signum(angle));
         double right_multiplier = ((double) Math.signum(angle));
         double m_power = motor_speed;
-	if(Math.abs(angle)==180){
-	    angle = (double) ( ( (double) Math.signum(angle) ) * 179.9 );
-	}
+        if(Math.abs(angle)==180){
+            angle = (double) ( ( (double) Math.signum(angle) ) * 179.9 );
+        }
         while(Parent.opModeIsActive() && (Math.abs(robotOrientation.getYaw(AngleUnit.DEGREES) - start_yaw) < Math.abs(angle))){
             robotOrientation = Parent.imu.getRobotYawPitchRollAngles();
             double yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
             Parent.telemetry.addData("Yaw", yaw);
             Parent.telemetry.update();
-            m_power = (Math.abs(robotOrientation.getYaw(AngleUnit.DEGREES)-start_yaw));//relative 
+            m_power = (Math.abs(robotOrientation.getYaw(AngleUnit.DEGREES)-start_yaw));//relative
             Parent.lm.setPower(left_multiplier*m_power);
             Parent.rm.setPower(right_multiplier*m_power);
         }
@@ -170,9 +179,9 @@ public class FTC2024WeRobotControl {
         Parent.rm.setPower(0);
     }
     public void rotate(double angle){
-        this.rotate(angle,this.defaultanglespeed);
+        this.rotate(angle,this.defaultspeed);
     }
-    
+
     public void test_forward_10_and_rotate_20deg(){
 
     }
