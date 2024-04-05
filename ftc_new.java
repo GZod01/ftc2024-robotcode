@@ -174,7 +174,7 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
             /*
              * définition de {@link t3} par utilisation de la fonction {@link helloexp} sur
              * la norme du vecteur du joystick gauche du gamepad 1 (racine carrée de {@link
-             * x} au carré plus {@link y} au carré
+             * x} au carré plus {@link y} au carré)
              */
             t3 = helloexp(Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)));
 
@@ -195,6 +195,7 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
             double vmean;
             double a;
             double b;
+			
             switch (mode) {
 
                 case NORMAL:
