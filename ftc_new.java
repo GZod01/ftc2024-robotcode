@@ -36,6 +36,7 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
     private DcMotorEx rmelevator;
     private DcMotorEx box;
     private DcMotorEx rotation;
+    private Servo avion;
     private ElapsedTime runtime = new ElapsedTime();
     private RobotMode mode = RobotMode.ESSAIFRANCK;
 
@@ -135,7 +136,8 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
         box = hardwareMap.get(DcMotorEx.class, "boxRot");
         box.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         box.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rotation.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        avion = hardwareMap.get(Servo.class, "avion");
         // box.setPositionPIDFCoefficients(5.0);
 
         // rotation positions: 20° pos initiale par rapport au sol
@@ -532,7 +534,7 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
             }
 
             if (gamepad1.right_bumper && gamepad1.left_bumper) {
-                // launch the plane
+                avion.setPosition(110);
             }
 
             telemetry.addData("x", x);
