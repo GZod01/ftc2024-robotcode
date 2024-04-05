@@ -138,7 +138,6 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
         box.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         avion = hardwareMap.get(Servo.class, "avion");
-		avion.setPosition(0);
         // box.setPositionPIDFCoefficients(5.0);
 
         // rotation positions: 20° pos initiale par rapport au sol
