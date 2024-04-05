@@ -23,7 +23,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @Autonomous
 
 public class Ftc2024_autonome_api extends LinearOpMode {
-    public String autonomous_mode;
+    public enum AutoMode{
+		B2D,B4D,B2N,B4N,R2D,R4D,R2N,R4N
+	}
+	public AutoMode autonomous_mode;
     public DcMotor lm;
     public DcMotor rm;
     public DcMotorEx lmelevator;
