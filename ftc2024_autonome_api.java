@@ -41,8 +41,8 @@ public class Ftc2024_autonome_api extends LinearOpMode {
         rm = hardwareMap.get(DcMotor.class, "brm");
         harvestmotor = hardwareMap.get(DcMotor.class, "moissonneuse");
         rotation = hardwareMap.get(DcMotorEx.class, "elvRot");
-		lmelevator = hardwareMap.get(DcMotorEx.class, "ltrselv");
-		rmelevator = hardwareMap.get(DcMotorEx.class, "rtrselv");
+        lmelevator = hardwareMap.get(DcMotorEx.class, "ltrselv");
+        rmelevator = hardwareMap.get(DcMotorEx.class, "rtrselv");
 
         rm.setDirection(DcMotor.Direction.REVERSE);
         rotation.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -106,6 +106,7 @@ public class Ftc2024_autonome_api extends LinearOpMode {
                     robot.boxElv();
                     robot.forward(2);
                     robot.rotate(90);
+                    robot.posBasse();
                     robot.forward(3.5);
                     robot.harvest(-1);
                     robot.backward(0.5);
