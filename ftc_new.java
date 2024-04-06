@@ -183,10 +183,13 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
             telemetry.addData("Status", "Running");
             
 
-			if (gamepad1.right_bumper && gamepad1.left_bumper && gamepad1.a){
-				avion.setPosition(0);
-				continue;
-			}
+            if (gamepad1.right_bumper && gamepad1.left_bumper){
+                avion.setDirection(Servo.Direction.REVERSE);
+                // telemetry.addData("servoPos",avion.getPosition());
+                // avion.setPosition(0);
+                avion.setPosition(0.75);
+                // continue;
+            }
             // Choix mode conduite / actif en manuel et auto
             if (gamepad1.a && !already_a) {
                 nextMode();
@@ -200,7 +203,7 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
             double vmean;
             double a;
             double b;
-			
+            
             switch (mode) {
 
                 case NORMAL:
@@ -233,7 +236,7 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
                     // double rapp = step/theta;
                     double signe = Math.signum(-y);
                     signe = (signe == 0)?1.0:signe;
-					if(Math.abs(x)<=0.1 && Math.abs(y)<=0.1) ltargetpos = rtargetpos = 0;
+                    if(Math.abs(x)<=0.1 && Math.abs(y)<=0.1) ltargetPos = rtargetPos = 0;
                     else if (Math.abs(x)<=0.1){
                         ltargetPos = rtargetPos = 100;
                     }else if (isBetween(x,0.1,0.9)){
@@ -539,20 +542,20 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
 
      
 
-            telemetry.addData("x", x);
-            telemetry.addData("y", y);
-            telemetry.addData("mode", mode);
-            telemetry.addData("lpow", lpower);
-            telemetry.addData("rpow", rpower);
-            telemetry.addData("ltrigg", t);
-            telemetry.addData("t2", t2);
-            telemetry.addData("rotation power", boxRot);
-            telemetry.addData("Position elevateur l", lmelevator.getCurrentPosition());
-            telemetry.addData("Position elevateur r", rmelevator.getCurrentPosition());
-            telemetry.addData("Position rotation", rotation.getCurrentPosition());
-            telemetry.addData("Position box", box.getCurrentPosition());
-            telemetry.addData("box velocity", rotation.getVelocity());
-            telemetry.update();
+            //telemetry.addData("x", x);
+            //telemetry.addData("y", y);
+            //telemetry.addData("mode", mode);
+            //telemetry.addData("lpow", lpower);
+            //telemetry.addData("rpow", rpower);
+            //telemetry.addData("ltrigg", t);
+            //telemetry.addData("t2", t2);
+            //telemetry.addData("rotation power", boxRot);
+            //telemetry.addData("Position elevateur l", lmelevator.getCurrentPosition());
+            //telemetry.addData("Position elevateur r", rmelevator.getCurrentPosition());
+            //telemetry.addData("Position rotation", rotation.getCurrentPosition());
+            //telemetry.addData("Position box", box.getCurrentPosition());
+            //telemetry.addData("box velocity", rotation.getVelocity());
+            //telemetry.update();
         }
     }
 
