@@ -100,25 +100,25 @@ public class Ftc2024_autonome_api extends LinearOpMode {
                     robot.boxElv();
                     robot.harvest(1);
                     robot.forward(2);
-                    robot.harvest(0);
+                    /*robot.harvest(0);
                     robot.rotate((-90));
                     robot.posBasse();
                     robot.forward(3.5);
                     robot.harvest(-1);
                     robot.backward(0.5);
                     robot.harvest(0);
-                    robot.forward(0.5);
+                    robot.forward(0.5);*/
                     break;
                 case B2D:
                     robot.posBasse();
                     robot.harvest(1);
-                    robot.forward(0.5);
-                    robot.harvest(0);
                     robot.forward(1);
+                    robot.harvest(0);
+                   /* robot.forward(1);
                     robot.harvest(-1);
                     robot.backward(0.5);
                     robot.harvest(0);
-                    robot.forward(0.5);
+                    robot.forward(0.5);*/
                     break;
                 case R4D:
                     robot.boxElv();
