@@ -134,8 +134,8 @@ public class Ftc2024_autonome_api{
                 case R4D:
                     robot.boxElv();
                     robot.harvest(1);
-                    robot.forward(2);
-                    robot.harvest(0);
+                    robot.forward(1);
+                    /*robot.harvest(0);
                     robot.rotate(90);
                     robot.posBasse();
                     while (opModeIsActive() && rotation.getCurrentPosition() < rotation.getTargetPosition()) {
@@ -146,15 +146,15 @@ public class Ftc2024_autonome_api{
                     robot.harvest(-1);
                     robot.backward(0.5);
                     robot.harvest(0);
-                    robot.forward(1);
+                    robot.forward(1);*/
                     break;
                 case R2D:
                     robot.boxElv();
                     //rebuild
                     //robot.harvest(1);
-                    robot.forward(1.5);
+                    robot.forward(1);
                     //robot.harvest(0);
-                    robot.rotate(90);
+                    /*robot.rotate(90);
                     robot.posBasse();
                     while (opModeIsActive() && rotation.getCurrentPosition() < rotation.getTargetPosition()) {
                         telemetry.addData("pos", rotation.getCurrentPosition());
@@ -164,7 +164,7 @@ public class Ftc2024_autonome_api{
                     //robot.harvest(-1);
                     //robot.backward(0.5);
                     //robot.harvest(0);
-                    //robot.forward(0.5);
+                    //robot.forward(0.5);*/
                     break;
                 case B4N:
                     robot.boxElv();
