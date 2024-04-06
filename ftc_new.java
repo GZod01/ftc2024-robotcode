@@ -181,6 +181,7 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
 	    t3 = helloexp(Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)));
 
 	    telemetry.addData("Status", "Running");
+		telemetry.addData("mode", mode);
 
 
 	    if (gamepad1.right_bumper && gamepad1.left_bumper){
@@ -556,7 +557,7 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
 	    //telemetry.addData("Position rotation", rotation.getCurrentPosition());
 	    //telemetry.addData("Position box", box.getCurrentPosition());
 	    //telemetry.addData("box velocity", rotation.getVelocity());
-	    //telemetry.update();
+	    telemetry.update();
 	}
     }
 

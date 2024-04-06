@@ -19,28 +19,29 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcode.hardware.HardwareMap;
 
 @Autonomous
 
-public class Ftc2024_autonome_api extends LinearOpMode {
-    public enum AutoMode{
-        B2D,B4D,B2N,B4N,R2D,R4D,R2N,R4N
+public class Ftc2024_autonome_api{
+    public enum AutoMode {
+        B2D, B4D, B2N, B4N, R2D, R4D, R2N, R4N
     }
+    public HardwareMap hardwareMap;
     public AutoMode autonomous_mode;
-    public DcMotor lm;
-    public DcMotor rm;
+    public DcMotorEx lm;
+    public DcMotorEx rm;
     public DcMotorEx lmelevator;
     public DcMotorEx rmelevator;
     public DcMotor harvestmotor;
     public IMU imu;
     public DcMotorEx rotation;
 
-    @Override
     public void runOpMode() {
-        
-        boolean auto = false; 
-        lm = hardwareMap.get(DcMotor.class, "blm");
-        rm = hardwareMap.get(DcMotor.class, "brm");
+
+        boolean auto = false;
+        lm = hardwareMap.get(DcMotorEx.class, "blm");
+        rm = hardwareMap.get(DcMotorEx.class, "brm");
         harvestmotor = hardwareMap.get(DcMotor.class, "moissonneuse");
         rotation = hardwareMap.get(DcMotorEx.class, "elvRot");
         lmelevator = hardwareMap.get(DcMotorEx.class, "ltrselv");
@@ -63,25 +64,24 @@ public class Ftc2024_autonome_api extends LinearOpMode {
         imu.resetYaw();
         YawPitchRollAngles robotOrientation;
         FTC2024WeRobotControl robot = new FTC2024WeRobotControl(this);
-        autonomous_mode = AutoMode.B4D;
 
         telemetry.addData("wait for start", "");
         telemetry.update();
-        
-        
 
-        waitForStart();
-        telemetry.addData("started", "");
-        telemetry.update();
-        robotOrientation = imu.getRobotYawPitchRollAngles();
-
+        while (opModeInInit()){
+            imu.resetYaw();
+            telemetry.addData("wait", "for start");
+            telemetry.addData("Yaw", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
+            telemetry.update();
+        }
+        
         while (opModeIsActive()) {
-            if (gamepad1.a && !auto){
+            if (gamepad1.a && !auto) {
                 auto = true;
                 break;
             }
         }
-        if (opModeIsActive()){
+        if (opModeIsActive()) {
             /*
              * autonomous_mode differents possibles values respect the next scheme:
              * team_color_shortcode + start_line_index + direct_or_no
@@ -94,7 +94,7 @@ public class Ftc2024_autonome_api extends LinearOpMode {
              *
              * default is "b4d"
              */
-            
+
             switch (autonomous_mode) {
                 default:
                     robot.boxElv();
@@ -103,6 +103,10 @@ public class Ftc2024_autonome_api extends LinearOpMode {
                     /*robot.harvest(0);
                     robot.rotate((-90));
                     robot.posBasse();
+                    while (opModeIsActive() && rotation.getCurrentPosition() < rotation.getTargetPosition()) {
+                        telemetry.addData("pos", rotation.getCurrentPosition());
+                        telemetry.update();
+                    }
                     robot.forward(3.5);
                     robot.harvest(-1);
                     robot.backward(0.5);
@@ -110,7 +114,14 @@ public class Ftc2024_autonome_api extends LinearOpMode {
                     robot.forward(0.5);*/
                     break;
                 case B2D:
+                    imu.resetYaw();
+                    
                     robot.posBasse();
+                    while (opModeIsActive() && rotation.getCurrentPosition() < rotation.getTargetPosition()) {
+                        telemetry.addData("pos", rotation.getCurrentPosition());
+                        telemetry.addData("Yaw", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
+                        telemetry.update();
+                    }
                     robot.harvest(1);
                     robot.forward(1);
                     robot.harvest(0);
@@ -127,6 +138,10 @@ public class Ftc2024_autonome_api extends LinearOpMode {
                     robot.harvest(0);
                     robot.rotate(90);
                     robot.posBasse();
+                    while (opModeIsActive() && rotation.getCurrentPosition() < rotation.getTargetPosition()) {
+                        telemetry.addData("pos", rotation.getCurrentPosition());
+                        telemetry.update();
+                    }
                     robot.forward(3.5);
                     robot.harvest(-1);
                     robot.backward(0.5);
@@ -135,16 +150,21 @@ public class Ftc2024_autonome_api extends LinearOpMode {
                     break;
                 case R2D:
                     robot.boxElv();
-                    robot.harvest(1);
-                    robot.forward(0.5);
-                    robot.harvest(0);
+                    //rebuild
+                    //robot.harvest(1);
+                    robot.forward(1.5);
+                    //robot.harvest(0);
                     robot.rotate(90);
                     robot.posBasse();
+                    while (opModeIsActive() && rotation.getCurrentPosition() < rotation.getTargetPosition()) {
+                        telemetry.addData("pos", rotation.getCurrentPosition());
+                        telemetry.update();
+                    }
                     robot.forward(1.5);
-                    robot.harvest(-1);
-                    robot.backward(0.5);
-                    robot.harvest(0);
-                    robot.forward(0.5);
+                    //robot.harvest(-1);
+                    //robot.backward(0.5);
+                    //robot.harvest(0);
+                    //robot.forward(0.5);
                     break;
                 case B4N:
                     robot.boxElv();
