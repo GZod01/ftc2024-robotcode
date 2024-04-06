@@ -58,7 +58,6 @@ public class FTC2024WeRobotControl {
 		this.timer = new ElapsedTime();
 	}
 
-<<<<<<< HEAD
 	public void boxElv() {
 		Parent.lmelevator.setVelocity(600);
 		Parent.rmelevator.setVelocity(600);
@@ -70,29 +69,8 @@ public class FTC2024WeRobotControl {
 		Parent.rmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 		Parent.rotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 	}
-	/*
-	 * return a metre/sec speed
-	 *
-	 * @param motor_speed = (optional) double between 0 and 1; motor power; default
-	 * to 1
-	 */
-=======
-    /*
-     * return a metre/sec speed
-     *
-     * @param motor_speed = (optional) double between 0 and 1; motor power; default
-     * to 1
-     */
-    
-    public void boxElv(){
-        Parent.lmelevator.setVelocity(600);
-        Parent.rmelevator.setVelocity(600);
-        Parent.lmelevator.setTargetPosition(90);
-        Parent.rmelevator.setTargetPosition(90);
-        Parent.lmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        Parent.rmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        }
-        
+	
+ 
     public void posBasse(){
         Parent.lmelevator.setVelocity(600);
         Parent.rmelevator.setVelocity(600);
@@ -105,7 +83,13 @@ public class FTC2024WeRobotControl {
         Parent.rotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         
     }
-        
+	/*
+	 * return a metre/sec speed
+	 *
+	 * @param motor_speed = (optional) double between 0 and 1; motor power; default
+	 * to 1
+	 */
+             
     public double getSpeedFromMotorSpeed(double motor_speed) {
         double speed_tour_par_minutes = this.tour_par_minutes * motor_speed;
         double speed = (speed_tour_par_minutes / 60) * this.wheel_perimeter;
