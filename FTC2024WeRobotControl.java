@@ -70,18 +70,30 @@ public class FTC2024WeRobotControl {
         Parent.rmelevator.setVelocity(600);
         Parent.lmelevator.setTargetPosition(90);
         Parent.rmelevator.setTargetPosition(90);
+        Parent.lmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        Parent.rmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+        
+    public void posBasse(){
+        Parent.lmelevator.setVelocity(600);
+        Parent.rmelevator.setVelocity(600);
         Parent.rotation.setVelocity(600);
-        Parent.rotation.setTargetPosition(-50);
+        Parent.lmelevator.setTargetPosition(0);
+        Parent.rmelevator.setTargetPosition(0);
+        Parent.rotation.setTargetPosition(800);
         Parent.lmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         Parent.rmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         Parent.rotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        }
+        
+    }
         
     public double getSpeedFromMotorSpeed(double motor_speed) {
         double speed_tour_par_minutes = this.tour_par_minutes * motor_speed;
         double speed = (speed_tour_par_minutes / 60) * this.wheel_perimeter;
         return speed;
     }
+    
+    
 
     /*
      * return the needed time for a distance
