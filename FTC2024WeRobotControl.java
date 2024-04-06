@@ -38,7 +38,7 @@ public class FTC2024WeRobotControl {
      * the width size of the tiles on the ground in metres
      */
     private final double ground_tiles_width = 61.0e-2; // metres
-                                                       //
+						       //
     private final double defaultspeed = 0.6;
 
     private ElapsedTime timer;
@@ -54,8 +54,8 @@ public class FTC2024WeRobotControl {
      */
 
     public FTC2024WeRobotControl(Ftc2024_autonome_api Parent) {
-        this.Parent = Parent;
-        this.timer = new ElapsedTime();
+	this.Parent = Parent;
+	this.timer = new ElapsedTime();
     }
 
     /*
@@ -77,26 +77,44 @@ public class FTC2024WeRobotControl {
         Parent.rotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
         
+    public void boxElv() {
+	Parent.lmelevator.setVelocity(600);
+	Parent.rmelevator.setVelocity(600);
+	Parent.lmelevator.setTargetPosition(90);
+	Parent.rmelevator.setTargetPosition(90);
+	Parent.rotation.setVelocity(600);
+	Parent.rotation.setTargetPosition(-50);
+	Parent.lmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+	Parent.rmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+	Parent.rotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+
     public void posBasse(){
-        Parent.lmelevator.setVelocity(600);
-        Parent.rmelevator.setVelocity(600);
-        Parent.rotation.setVelocity(600);
-        Parent.lmelevator.setTargetPosition(0);
-        Parent.rmelevator.setTargetPosition(0);
-        Parent.rotation.setTargetPosition(800);
-        Parent.lmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        Parent.rmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        Parent.rotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        
+	Parent.lmelevator.setVelocity(600);
+	Parent.rmelevator.setVelocity(600);
+	Parent.rotation.setVelocity(600);
+	Parent.lmelevator.setTargetPosition(0);
+	Parent.rmelevator.setTargetPosition(0);
+	Parent.rotation.setTargetPosition(800);
+	Parent.lmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+	Parent.rmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+	Parent.rotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
     }
-        
+    /*
+     * return a metre/sec speed
+     *
+     * @param motor_speed = (optional) double between 0 and 1; motor power; default
+     * to 1
+     */
+
     public double getSpeedFromMotorSpeed(double motor_speed) {
-        double speed_tour_par_minutes = this.tour_par_minutes * motor_speed;
-        double speed = (speed_tour_par_minutes / 60) * this.wheel_perimeter;
-        return speed;
+	double speed_tour_par_minutes = this.tour_par_minutes * motor_speed;
+	double speed = (speed_tour_par_minutes / 60) * this.wheel_perimeter;
+	return speed;
     }
-    
-    
+
 
     /*
      * return the needed time for a distance
@@ -107,8 +125,8 @@ public class FTC2024WeRobotControl {
      * to 1
      */
     public double time_for_dist(double dist, double motor_speed) {
-        double speed = getSpeedFromMotorSpeed(motor_speed);
-        return (dist / speed);
+	double speed = getSpeedFromMotorSpeed(motor_speed);
+	return (dist / speed);
     }
 
     /*
@@ -121,18 +139,24 @@ public class FTC2024WeRobotControl {
      * to 1
      */
     public void forward(double n_tiles, double motor_speed) {
-        double total_time = time_for_dist(n_tiles * ground_tiles_width, motor_speed);
-        timer.reset();
-        while (Parent.opModeIsActive() && timer.seconds() < total_time) {
-            Parent.lm.setPower(motor_speed);
-            Parent.rm.setPower(motor_speed);
-        }
-        Parent.lm.setPower(0);
-        Parent.rm.setPower(0);
+	double total_time = time_for_dist(n_tiles * ground_tiles_width, motor_speed);
+	timer.reset();
+	while (Parent.opModeIsActive() && timer.seconds() < total_time) {
+	    Parent.lm.setPower(motor_speed);
+	    Parent.rm.setPower(motor_speed);
+	}
+	Parent.lm.setPower(0);
+	Parent.rm.setPower(0);
     }
 
-    public void forward(double n_tiles){
-        this.forward(n_tiles,this.defaultspeed);
+    /*
+     * go forward
+     * when only one argument passed:
+     * 
+     * @param n_tiles number of tiles
+     */
+    public void forward(double n_tiles) {
+	this.forward(n_tiles, this.defaultspeed);
     }
 
     /*
@@ -145,11 +169,11 @@ public class FTC2024WeRobotControl {
      * to 1
      */
     public void backward(double n_tiles, double motor_speed) {
-        forward(n_tiles, -motor_speed);
+	forward(n_tiles, -motor_speed);
     }
 
-    public void backward(double n_tiles){
-        this.backward(n_tiles,this.defaultspeed);
+    public void backward(double n_tiles) {
+	this.backward(n_tiles, this.defaultspeed);
     }
 
     /*
@@ -159,10 +183,11 @@ public class FTC2024WeRobotControl {
      * to 1
      */
     public void harvest(double motor_speed) {
-        Parent.harvestmotor.setPower(motor_speed);
+	Parent.harvestmotor.setPower(motor_speed);
     }
+
     public void harvest() {
-        this.harvest(1.0);
+	this.harvest(1.0);
     }
 
     /*
@@ -173,34 +198,33 @@ public class FTC2024WeRobotControl {
      * @param motor_speed = (optional) double between 0 and 1; motor power; default
      * to 1
      */
-    public void rotate(double angle, double motor_speed){
-        robotOrientation = Parent.imu.getRobotYawPitchRollAngles();
-        double start_yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
-        double anglerad = Math.toRadians(angle);
-        angle = Math.toDegrees(Math.atan2(Math.sin(anglerad),Math.cos(anglerad)));
-        double left_multiplier = -((double) Math.signum(angle));
-        double right_multiplier = ((double) Math.signum(angle));
-        double m_power = motor_speed;
-        if(Math.abs(angle)==180){
-            angle = (double) ( ( (double) Math.signum(angle) ) * 179.9 );
-        }
-        while(Parent.opModeIsActive() && (Math.abs(robotOrientation.getYaw(AngleUnit.DEGREES) - start_yaw) < Math.abs(angle))){
-            robotOrientation = Parent.imu.getRobotYawPitchRollAngles();
-            double yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
-            Parent.telemetry.addData("Yaw", yaw);
-            Parent.telemetry.update();
-            m_power = (Math.abs(robotOrientation.getYaw(AngleUnit.DEGREES)-start_yaw));//relative
-            Parent.lm.setPower(left_multiplier*m_power);
-            Parent.rm.setPower(right_multiplier*m_power);
-        }
-        Parent.lm.setPower(0);
-        Parent.rm.setPower(0);
-    }
-    public void rotate(double angle){
-        this.rotate(angle,this.defaultspeed);
+    public void rotate(double angle, double motor_speed) {
+	robotOrientation = Parent.imu.getRobotYawPitchRollAngles();
+	double start_yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
+	double anglerad = Math.toRadians(angle);
+	angle = Math.toDegrees(Math.atan2(Math.sin(anglerad), Math.cos(anglerad)));
+	double left_multiplier = -((double) Math.signum(angle));
+	double right_multiplier = ((double) Math.signum(angle));
+	double m_power = motor_speed;
+	if (Math.abs(angle) == 180) {
+	    angle = (double) (((double) Math.signum(angle)) * 179.9);
+	}
+	while (Parent.opModeIsActive()
+		&& (Math.abs(robotOrientation.getYaw(AngleUnit.DEGREES) - start_yaw) < Math.abs(angle))) {
+	    robotOrientation = Parent.imu.getRobotYawPitchRollAngles();
+	    double yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
+	    Parent.telemetry.addData("Yaw", yaw);
+	    Parent.telemetry.update();
+	    m_power = (Math.abs(robotOrientation.getYaw(AngleUnit.DEGREES) - start_yaw));// relative
+	    Parent.lm.setPower(left_multiplier * m_power);
+	    Parent.rm.setPower(right_multiplier * m_power);
+		}
+	Parent.lm.setPower(0);
+	Parent.rm.setPower(0);
     }
 
-    public void test_forward_10_and_rotate_20deg(){
-
+    public void rotate(double angle) {
+	this.rotate(angle, this.defaultspeed);
     }
+
 }
