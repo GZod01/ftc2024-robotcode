@@ -27,7 +27,7 @@ public class Ftc2024_autonome_last extends LinearOpMode {
 	B2D, B4D
     }
 
-    public AutoMode autonomous_mode;
+    public AutoMode autonomous_mode = B2D;
     public DcMotor lm;
     public DcMotor rm;
     public DcMotorEx lmelevator;
