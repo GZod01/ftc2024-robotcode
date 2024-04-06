@@ -82,15 +82,13 @@ public class Ftc2024_autonome_api extends LinearOpMode {
             switch (autonomous_mode) {
                 default:
                     robot.boxElv();
-                    robot.harvest(1);
-                    robot.forward(0.5);
-                    robot.harvest(0);
+                    robot.forward(2);
                     robot.rotate((-90));
-                    robot.forward(1.5);
+                    robot.forward(3.5);
                     robot.harvest(-1);
-                    robot.backward(1);
+                    robot.backward(0.5);
                     robot.harvest(0);
-                    robot.forward(1);
+                    robot.forward(0.5);
                     break;
                 case B2D:
                     robot.boxElv();
@@ -104,11 +102,11 @@ public class Ftc2024_autonome_api extends LinearOpMode {
                     break;
                 case R4D:
                     robot.boxElv();
-                    robot.forward(0.5);
+                    robot.forward(2);
                     robot.rotate(90);
-                    robot.forward(1.5);
+                    robot.forward(3.5);
                     robot.harvest(-1);
-                    robot.backward(1);
+                    robot.backward(0.5);
                     robot.harvest(0);
                     robot.forward(1);
                     break;
@@ -118,9 +116,9 @@ public class Ftc2024_autonome_api extends LinearOpMode {
                     robot.rotate(90);
                     robot.forward(2.5);
                     robot.harvest(-1);
-                    robot.backward(1);
+                    robot.backward(0.5);
                     robot.harvest(0);
-                    robot.forward(1);
+                    robot.forward(0.5);
                     break;
                 case B4N:
                     robot.boxElv();
