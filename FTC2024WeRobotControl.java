@@ -68,10 +68,13 @@ public class FTC2024WeRobotControl {
     public void boxElv(){
         Parent.lmelevator.setVelocity(600);
         Parent.rmelevator.setVelocity(600);
-        Parent.lmelevator.setTargetPosition(90);
-        Parent.rmelevator.setTargetPosition(90);
+        Parent.rotation.setVelocity(600);
+        Parent.lmelevator.setTargetPosition(50);
+        Parent.rmelevator.setTargetPosition(50);
+        Parent.rotation.setTargetPosition(30);
         Parent.lmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         Parent.rmelevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        Parent.rotation.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
         
     public void posBasse(){
