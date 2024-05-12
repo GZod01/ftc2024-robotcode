@@ -34,13 +34,14 @@ public class AutonomeTest extends LinearOpMode {
         droit.setDirection(DcMotorSimple.Direction.REVERSE);
         droit.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         droit.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
+	moissonneuse = hardwareMap.get(DcMotor.class,"msn");
         
         
         waitForStart();
         
         boiteG.setTargetPosition(90);
         boiteD.setTargetPosition(90);
-        while (boiteG.getCurrentPosition()<boiteG.getTargetPosition()){
+        while (opModeIsActive() && boiteG.getCurrentPosition()<boiteG.getTargetPosition()){
             boiteD.setVelocity(100);
             boiteD.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             boiteG.setVelocity(100);
@@ -49,10 +50,10 @@ public class AutonomeTest extends LinearOpMode {
             telemetry.addData("position elv gauche", boiteG.getCurrentPosition());
             telemetry.update();
         }
-        gauche.setTargetPosition(700);
-        droit.setTargetPosition(700);
+        gauche.setTargetPosition(700*3);
+        droit.setTargetPosition(700*3);
         
-        while (gauche.getCurrentPosition()<gauche.getTargetPosition()){
+        while (opModeIsActive() && gauche.getCurrentPosition()<gauche.getTargetPosition()){
             gauche.setVelocity(250);
             gauche.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             droit.setVelocity(250);
@@ -63,12 +64,25 @@ public class AutonomeTest extends LinearOpMode {
         gauche.setTargetPosition(165);
         droit.setTargetPosition(1235);
         
-        while (gauche.getCurrentPosition()>gauche.getTargetPosition()){
+        while (opModeIsActive() && gauche.getCurrentPosition()>gauche.getTargetPosition()){
             gauche.setVelocity(250);
             gauche.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             droit.setVelocity(250);
             droit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
+        gauche.setTargetPosition(700*3);
+        droit.setTargetPosition(700*3);
+        
+        while (opModeIsActive() && gauche.getCurrentPosition()<gauche.getTargetPosition()){
+	    moissonneuse.setPower(1);
+            gauche.setVelocity(250);
+            gauche.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            droit.setVelocity(250);
+            droit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+	moissonneuse.setPower(0);
+        gauche.setVelocity(0);
+        droit.setVelocity(0);
         
     }
 }
