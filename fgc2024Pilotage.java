@@ -32,11 +32,32 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         
-        float x; // abscisse joystick gauche
-        double y; // ordonnées joystick gauche
+        float x = gamepad1.left_stick_x; // abscisse joystick gauche
+        double y = gamepad1.left_stick_y; // ordonnées joystick gauche
+        double lpower = 0.0; //puissance moteur gauche
+        double rpower = 0.0; //puissance moteur droit
 
         telemetry.addData("Status"," Initialized");
 
-        
+        lm = hardwareMap.get(DcMotorEx.class, "lm");
+	    rm = hardwareMap.get(DcMotorEx.class, "rm");
+        lm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+	    rm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+	    lm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+	    rm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
+        lpower = ((1+x)*Math.signum(y))/2;
+        rpower = ((1-x)*Math.signum(y))/2;
+
+        if ( x=1 || x=-1 ){
+            lpower = 1*Math.signum(x);
+            rpower = - lpower;
+        }
+
+        lpower = lpower*gamepad1.left_trigger;
+        rpower = lpower*gamepad1.left_trigger;
+
+        rm.setPower(rpower);
+        lm.setPower(lpower);
     }
 }
