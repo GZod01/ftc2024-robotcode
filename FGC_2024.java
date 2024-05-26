@@ -23,7 +23,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 @TeleOp(name = "WeRobot: FTC2024 NEW! Carlike", group = "WeRobot")
-public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
+public class FGC_2024 extends LinearOpMode {
     
     private DcMotorEx rm;
     private DcMotorEx lm;
@@ -49,7 +49,7 @@ public class WEROBOT_FTC2024_New_carlike extends LinearOpMode {
         lpower = ((1+x)*Math.signum(y))/2;
         rpower = ((1-x)*Math.signum(y))/2;
 
-        if ( x=1 || x=-1 ){
+        if (Math.abs(x)>0.9){
             lpower = 1*Math.signum(x);
             rpower = - lpower;
         }
