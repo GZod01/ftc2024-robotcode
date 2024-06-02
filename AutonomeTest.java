@@ -17,6 +17,7 @@ public class AutonomeTest extends LinearOpMode {
     private DcMotorEx boiteG;
     private DcMotorEx boiteD;
     private ElapsedTime runtime = new ElapsedTime();
+    private DcMotor moissonneuse;
     
     @Override
     public void runOpMode(){
@@ -34,7 +35,7 @@ public class AutonomeTest extends LinearOpMode {
         droit.setDirection(DcMotorSimple.Direction.REVERSE);
         droit.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         droit.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
-	moissonneuse = hardwareMap.get(DcMotor.class,"msn");
+	moissonneuse = hardwareMap.get(DcMotor.class,"moissonneuse");
         
         
         waitForStart();
@@ -64,12 +65,14 @@ public class AutonomeTest extends LinearOpMode {
         gauche.setTargetPosition(165);
         droit.setTargetPosition(1235);
         
-        while (opModeIsActive() && gauche.getCurrentPosition()>gauche.getTargetPosition()){
+        while (opModeIsActive() && droit.getCurrentPosition()>droit.getTargetPosition()){
             gauche.setVelocity(250);
             gauche.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             droit.setVelocity(250);
             droit.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
+	gauche.setVelocity(0);
+	droit.setVelocity(0);
         gauche.setTargetPosition(700*3);
         droit.setTargetPosition(700*3);
         
