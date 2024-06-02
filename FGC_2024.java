@@ -22,42 +22,49 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
-@TeleOp(name = "WeRobot: FTC2024 NEW! Carlike", group = "WeRobot")
+@TeleOp(name = "FGC2024", group = "WeRobot")
 public class FGC_2024 extends LinearOpMode {
-    
+
     private DcMotorEx rm;
     private DcMotorEx lm;
 
 
     @Override
     public void runOpMode() throws InterruptedException {
-        
-        float x = gamepad1.left_stick_x; // abscisse joystick gauche
-        double y = gamepad1.left_stick_y; // ordonnées joystick gauche
-        double lpower = 0.0; //puissance moteur gauche
-        double rpower = 0.0; //puissance moteur droit
+
 
         telemetry.addData("Status"," Initialized");
+        telemetry.update();
 
         lm = hardwareMap.get(DcMotorEx.class, "lm");
-	    rm = hardwareMap.get(DcMotorEx.class, "rm");
-        lm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-	    rm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-	    lm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-	    rm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        rm = hardwareMap.get(DcMotorEx.class, "rm");
+        rm.setDirection(DcMotor.Direction.REVERSE);
+        //lm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        //rm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-        lpower = ((1+x)*Math.signum(y))/2;
-        rpower = ((1-x)*Math.signum(y))/2;
+        waitForStart();
+        while(opModeIsActive()){
+            float x = gamepad1.left_stick_x; // abscisse joystick gauche
+            double y = gamepad1.left_stick_y; // ordonnées joystick gauche
+            double lpower = 0.0; //puissance moteur gauche
+            double rpower = 0.0; //puissance moteur droit
 
-        if (Math.abs(x)>0.9){
-            lpower = 1*Math.signum(x);
-            rpower = - lpower;
+            lpower = ((1-x)*Math.signum(y))/1.5;
+            rpower = ((1+x)*Math.signum(y))/1.5;
+
+            if ( Math.abs(x)==1){
+                lpower = 0.75*Math.signum(x);
+                rpower = -lpower;
+            }
+
+            lpower = lpower*gamepad1.right_trigger;
+            rpower = rpower*gamepad1.right_trigger;
+
+            rm.setPower(rpower);
+            lm.setPower(lpower);
+            telemetry.addData("r", rpower);
+            telemetry.addData("l", lpower);
+            telemetry.update();
         }
-
-        lpower = lpower*gamepad1.left_trigger;
-        rpower = lpower*gamepad1.left_trigger;
-
-        rm.setPower(rpower);
-        lm.setPower(lpower);
     }
 }
