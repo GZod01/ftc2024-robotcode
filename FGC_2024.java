@@ -34,7 +34,6 @@ public class FGC_2024 extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-<<<<<<< HEAD:FGC_2024.java
 
 
         telemetry.addData("Status"," Initialized");
@@ -55,16 +54,19 @@ public class FGC_2024 extends LinearOpMode {
 
             lpower = ((1-x)*Math.signum(y))/1.5;
             rpower = ((1+x)*Math.signum(y))/1.5;
-	    lpower = ((1+x)*Math.signum(y))/2;
-	    rpower = ((1-x)*Math.signum(y))/2;
 
             if ( Math.abs(x)==1){
                 lpower = 0.75*Math.signum(x);
                 rpower = -lpower;
             }
-
-            lpower = lpower*gamepad1.right_trigger;
-            rpower = rpower*gamepad1.right_trigger;
+            
+            if(gamepad1.right_trigger == 0){
+                lpower /=3;
+                rpower /=3;
+            }else{
+                lpower = lpower*gamepad1.right_trigger;
+                rpower = rpower*gamepad1.right_trigger;
+            }
 
             rm.setPower(rpower);
             lm.setPower(lpower);
@@ -72,32 +74,7 @@ public class FGC_2024 extends LinearOpMode {
             telemetry.addData("l", lpower);
             telemetry.update();
         }
-=======
 
-
-	telemetry.addData("Status"," Initialized");
-	telemetry.update();
-
-	lm = hardwareMap.get(DcMotorEx.class, "lm");
-	lm.setDirection(DcMotor.Direction.REVERSE);
-	rm = hardwareMap.get(DcMotorEx.class, "rm");
-	//lm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-	//rm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-
-	waitForStart();
-	while(opModeIsActive()){
-	    float x = gamepad1.left_stick_x; // abscisse joystick gauche
-	    double y = gamepad1.left_stick_y; // ordonnées joystick gauche
-	    double lpower = 0.0; //puissance moteur gauche
-	    double rpower = 0.0; //puissance mo
-
-    	    rm.setPower(rpower);
-    	    lm.setPower(lpower);
-            telemetry.addData("r", rpower);
-            telemetry.addData("l", lpower);
-            telemetry.update();
-        }
-	    telemetry.update();
 	}
     }
 }
