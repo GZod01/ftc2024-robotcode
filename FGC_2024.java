@@ -25,8 +25,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 @TeleOp(name = "FGC2024", group = "WeRobot")
 public class FGC_2024 extends LinearOpMode {
 
-@TeleOp(name = "FGC2024", group = "WeRobot")
-public class FGC_2024 extends LinearOpMode {
 
     private DcMotorEx rm;
     private DcMotorEx lm;
@@ -67,14 +65,12 @@ public class FGC_2024 extends LinearOpMode {
                 lpower = lpower*gamepad1.right_trigger;
                 rpower = rpower*gamepad1.right_trigger;
             }
-
+            
             rm.setPower(rpower);
             lm.setPower(lpower);
             telemetry.addData("r", rpower);
             telemetry.addData("l", lpower);
             telemetry.update();
         }
-
 	}
-    }
 }
