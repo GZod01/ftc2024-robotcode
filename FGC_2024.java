@@ -49,10 +49,13 @@ public class FGC_2024 extends LinearOpMode {
         //rm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         elv1 = hardwareMap.get(DcMotorEx.class, "elv1");
         elv1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        elv1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         //elv2 = hardwareMap.get(DcMotorEx.class, "elv2");
         //elv2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        //elv2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         //elv3 = hardwareMap.get(DcMotorEx.class, "elv3");
         //elv3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        //elv3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
         boolean already_up = false;
@@ -82,14 +85,14 @@ public class FGC_2024 extends LinearOpMode {
                 rpower = rpower*gamepad1.right_trigger;
             }
 
-            if (gamepad1.dpad_up && !already_up && i<3){
+            if (gamepad1.dpad_up && !already_up && hauteur<3){
 
                 elv1.setVelocity(250);
                 // elv2.setVelocity(250);
                 // elv3.setVelocity(250);
-                elv1.setTargetPosition(elv1.getCurrentPosition()+10);
+                elv1.setTargetPosition(elv1.getCurrentPosition()+277);
                 // elv2.setTargetPosition(elv2.getCurrentPosition()+15);
-                // elv3.setTargetPosition(elv3.getCurrentPosition()+160);
+                // elv3.setTargetPosition(elv3.getCurrentPosition()+15);
                 elv1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 // elv2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 // elv3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -101,17 +104,17 @@ public class FGC_2024 extends LinearOpMode {
                 already_up = false;
             }
 
-            if (gamepad1.dpad_down && !already_up && i>0){
+            if (gamepad1.dpad_down && !already_up && hauteur>0){
 
                 elv1.setVelocity(250);
-                elv2.setVelocity(250);
-                elv3.setVelocity(250);
-                elv1.setTargetPosition(elv1.getCurrentPosition()-10);
-                elv2.setTargetPosition(elv2.getCurrentPosition()-15);
-                elv3.setTargetPosition(elv3.getCurrentPosition()-160);
+                //elv2.setVelocity(250);
+                //elv3.setVelocity(250);
+                elv1.setTargetPosition(elv1.getCurrentPosition()-277);
+                // elv2.setTargetPosition(elv2.getCurrentPosition()-15);
+                // elv3.setTargetPosition(elv3.getCurrentPosition()-15);
                 elv1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                elv2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                elv3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                // elv2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                // elv3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 hauteur -= 1;
                 
                 already_down = !already_down;
